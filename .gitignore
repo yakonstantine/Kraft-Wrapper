@@ -11,3 +11,7 @@
 /KraftWrapper/KraftWrapper.Extensions.Tests/obj
 /KraftWrapper/packages
 /KraftWrapper/KraftWrapper.Extensions.Tests/bin/Debug
+/KraftWrapper/KraftWrapper.Fake/bin/Debug
+/KraftWrapper/KraftWrapper.Fake/obj
+/KraftWrapper/KraftWrapper.TestHelper/bin/Debug
+/KraftWrapper/KraftWrapper.TestHelper/obj

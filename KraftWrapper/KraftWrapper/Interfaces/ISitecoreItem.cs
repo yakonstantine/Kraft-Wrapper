@@ -6,7 +6,7 @@ namespace KraftWrapper.Interfaces
     public interface ISitecoreItem
     {
         Guid Id { get; }
-        Guid TemplateID { get; }
+        Guid TemplateId { get; }
         string Name { get; }
         string DisplayName { get; }
         ISitecoreItemUri ItemUri { get; }

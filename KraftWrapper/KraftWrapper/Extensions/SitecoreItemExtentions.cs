@@ -19,9 +19,9 @@ namespace KraftWrapper.Extensions
 
         public static object As(this ISitecoreItem item, Type type)
         {
-            var templateID = ValidateTypeAndGetTemplateID(type);
+            var templateId = ValidateTypeAndGetTemplateID(type);
 
-            if (item.TemplateID != templateID)
+            if (item.TemplateId != templateId)
                 return null;
 
             var propertyDatas = GetPropertyDatas(type);
@@ -81,8 +81,14 @@ namespace KraftWrapper.Extensions
 
             foreach (var propertyInfo in type.GetProperties())
             {
-                if (typeof(IEnumerable).IsAssignableFrom(propertyInfo.PropertyType))
+                if (propertyInfo.PropertyType != typeof(string) 
+                    && typeof(IEnumerable).IsAssignableFrom(propertyInfo.PropertyType))
                 {
+                    result.Add(new FieldInfo
+                    {
+                        PropertyInfo = propertyInfo
+                    });
+
                     continue;
                 }
 
@@ -98,7 +104,7 @@ namespace KraftWrapper.Extensions
                 result.Add(new FieldInfo
                 {
                     PropertyInfo = propertyInfo,
-                    FieldID = new Guid(sitecoreFieldAttribute.FieldId)
+                    FieldId = new Guid(sitecoreFieldAttribute.FieldId)
                 });
             }
 
@@ -111,7 +117,7 @@ namespace KraftWrapper.Extensions
             var childTemplateID = ValidateTypeAndGetTemplateID(childType);
 
             var childrenGroups = children.GroupBy(
-                x => x.TemplateID,
+                x => x.TemplateId,
                 x => x,
                 (key, items) => new { TemplateID = key, Items = items.ToList() });
 
@@ -132,15 +138,18 @@ namespace KraftWrapper.Extensions
 
         private static void SetFieldValue(object targetObject, ISitecoreItem item, FieldInfo propertyData)
         {
-            var value = GetFieldValue(propertyData.PropertyInfo.PropertyType, item, propertyData.FieldID);
+            var value = GetFieldValue(propertyData.PropertyInfo.PropertyType, item, propertyData.FieldId);
             propertyData.PropertyInfo.SetValue(targetObject, value);
         }
 
-        private static object GetFieldValue(Type propertyType, ISitecoreItem item, Guid fieldID)
+        private static object GetFieldValue(Type propertyType, ISitecoreItem item, Guid fieldId)
         {
-            var field = item.GetField(fieldID);
+            var field = item.GetField(fieldId);
 
-            if (propertyType.IsSimple())
+            if (field == null)
+                return null;
+
+            if (propertyType.IsSimple() || propertyType == typeof(DateTime))
             {
                 return GetFieldValueForSimpleType(propertyType, field.Value);
             }
@@ -182,22 +191,13 @@ namespace KraftWrapper.Extensions
 
                 return valueLower == "1" || valueLower == "true";
             }
-
-            var methodInfo = propertyType.GetMethod("TryParse", new[] { typeof(string), propertyType.MakeByRefType() });
-
-            if (methodInfo == null)
-                throw new InvalidOperationException($"{propertyType} does not have a built in try-parser.");
-
-            object[] args = { fieldValue, null };
-
-            var successfulParse = (bool)methodInfo.Invoke(null, args);
-
-            if (!successfulParse)
+            
+            if (propertyType == typeof(DateTime))
             {
-                throw new InvalidOperationException($"Can not parse string to type {propertyType}.");
+                return DateTime.Parse(fieldValue);
             }
 
-            return args[1];
+            return null;
         }
 
         private static bool IsSimple(this Type type)
@@ -257,7 +257,7 @@ namespace KraftWrapper.Extensions
         private class FieldInfo
         {
             public PropertyInfo PropertyInfo { get; set; }
-            public Guid FieldID { get; set; }
+            public Guid FieldId { get; set; }
         }
     }
 }
