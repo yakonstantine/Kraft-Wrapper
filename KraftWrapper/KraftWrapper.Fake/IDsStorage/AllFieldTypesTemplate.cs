@@ -1,6 +1,6 @@
 ﻿namespace KraftWrapper.Fake.IDsStorage
 {
-    public static class AllFieldTipesTemplate
+    public static class AllFieldTypesTemplate
     {
         public const string TemplateId              = "{00000000-0000-0000-0000-000000001000}";
 

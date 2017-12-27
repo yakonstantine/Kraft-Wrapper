@@ -41,9 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IDsStorage\AllFieldTipesTemplate.cs" />
+    <Compile Include="IDsStorage\AllFieldTypesTemplate.cs" />
     <Compile Include="IDsStorage\TemplateWithChildren.cs" />
-    <Compile Include="Models\AllFieldTipesFakeModel.cs" />
+    <Compile Include="Models\AllFieldTypesFakeModel.cs" />
     <Compile Include="Models\TemplateWithChildrenFakeModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

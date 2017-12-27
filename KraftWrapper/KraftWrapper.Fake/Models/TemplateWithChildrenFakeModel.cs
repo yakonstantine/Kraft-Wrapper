@@ -11,6 +11,6 @@ namespace KraftWrapper.Fake.Models
         [SitecoreField(FieldId = TemplateWithChildren.TextValueId)]
         public string TextValue { get; set; }
 
-        public IList<AllFieldTipesFakeModel> Children { get; set; }
+        public IList<AllFieldTypesFakeModel> Children { get; set; }
     }
 }

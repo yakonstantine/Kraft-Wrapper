@@ -58,13 +58,13 @@ namespace KraftWrapper.Extensions.Tests
         #endregion
 
         [TestMethod]
-        public void Mapping_ValidateAllFieldTipes()
+        public void Mapping_ValidateAllFieldTypes()
         {
-            var sitecoreItem = SetupItemWithAllFieldTipes();
+            var sitecoreItem = SetupItemWithAllFieldTypes();
 
-            var result = sitecoreItem.As<AllFieldTipesFakeModel>();
+            var result = sitecoreItem.As<AllFieldTypesFakeModel>();
 
-            ValidateObjectWithAllFieldTipes(result);
+            ValidateObjectWithAllFieldTypes(result);
         }
 
         [TestMethod]
@@ -73,9 +73,9 @@ namespace KraftWrapper.Extensions.Tests
             var textValue = "test field value";
             var children = new List<ISitecoreItem>
                     {
-                        SetupItemWithAllFieldTipes(),
-                        SetupItemWithAllFieldTipes(),
-                        SetupItemWithAllFieldTipes()
+                        SetupItemWithAllFieldTypes(),
+                        SetupItemWithAllFieldTypes(),
+                        SetupItemWithAllFieldTypes()
                     };
 
             var sitecoreItem = new Mock<ISitecoreItem>();
@@ -115,11 +115,11 @@ namespace KraftWrapper.Extensions.Tests
 
             foreach(var child in result.Children)
             {
-                ValidateObjectWithAllFieldTipes(child);
+                ValidateObjectWithAllFieldTypes(child);
             }
         }
 
-        public ISitecoreItem SetupItemWithAllFieldTipes()
+        public ISitecoreItem SetupItemWithAllFieldTypes()
         {
             var targetItem = new Mock<ISitecoreItem>();
             targetItem
@@ -131,51 +131,51 @@ namespace KraftWrapper.Extensions.Tests
             var sitecoreItem = new Mock<ISitecoreItem>();
             sitecoreItem
                 .Setup(x => x.TemplateId)
-                .Returns(new Guid(AllFieldTipesTemplate.TemplateId));
+                .Returns(new Guid(AllFieldTypesTemplate.TemplateId));
             sitecoreItem
                 .Setup(x => x.GetField(It.IsAny<Guid>()))
                 .Returns((Guid id) =>
                 {
                     switch (ConvertToIDString(id))
                     {
-                        case AllFieldTipesTemplate.TextValueFieldId:
+                        case AllFieldTypesTemplate.TextValueFieldId:
                             {
                                 return FieldMockHelper.MockSitecoreField(
                                     _textValue, 
                                     _source);
                             }
-                        case AllFieldTipesTemplate.IntegerValueFieldId:
+                        case AllFieldTypesTemplate.IntegerValueFieldId:
                             {
                                 return FieldMockHelper.MockSitecoreField(
                                     _integerValue.ToString(), 
                                     _source);
                             }
-                        case AllFieldTipesTemplate.BooleanValueFieldId:
+                        case AllFieldTypesTemplate.BooleanValueFieldId:
                             {
                                 return FieldMockHelper.MockSitecoreField(
                                     _booleanValue ? "1" : "0", 
                                     _source);
                             }
-                        case AllFieldTipesTemplate.DoubleValueFieldId:
+                        case AllFieldTypesTemplate.DoubleValueFieldId:
                             {
                                 return FieldMockHelper.MockSitecoreField(
                                     _doubleValue.ToString(), 
                                     _source);
                             }
-                        case AllFieldTipesTemplate.DateTimeValueFieldId:
+                        case AllFieldTypesTemplate.DateTimeValueFieldId:
                             {
                                 return FieldMockHelper.MockSitecoreField(
                                     _dateTimeValue.ToString(), 
                                     _source);
                             }
-                        case AllFieldTipesTemplate.HtmlStringValueFieldId:
+                        case AllFieldTypesTemplate.HtmlStringValueFieldId:
                             {
                                 return FieldMockHelper.MockSitecoreField(
                                     _htmlStringValue.ToString(),
                                     _source,
                                     _htmlStringValue);
                             }
-                        case AllFieldTipesTemplate.TextFieldId:
+                        case AllFieldTypesTemplate.TextFieldId:
                             {
                                 var textField = CustomFieldMockHelper.MockTextField(
                                     _textFieldText,
@@ -186,7 +186,7 @@ namespace KraftWrapper.Extensions.Tests
                                     _source, 
                                     textField);
                             }
-                        case AllFieldTipesTemplate.LinkFieldId:
+                        case AllFieldTypesTemplate.LinkFieldId:
                             {
                                 var linkField = CustomFieldMockHelper.MockLinkField(
                                     _linkFieldText,
@@ -199,7 +199,7 @@ namespace KraftWrapper.Extensions.Tests
                                     _source, 
                                     linkField);
                             }
-                        case AllFieldTipesTemplate.CheckboxFieldId:
+                        case AllFieldTypesTemplate.CheckboxFieldId:
                             {
                                 var checkboxField = CustomFieldMockHelper.MockCheckboxField(
                                     _checkboxFieldIsChecked,
@@ -211,7 +211,7 @@ namespace KraftWrapper.Extensions.Tests
                                     _source, 
                                     checkboxField);
                             }
-                        case AllFieldTipesTemplate.ImageFieldId:
+                        case AllFieldTypesTemplate.ImageFieldId:
                             {
                                 var imageField = CustomFieldMockHelper.MockImageField(
                                     _imageFieldUrl,
@@ -226,7 +226,7 @@ namespace KraftWrapper.Extensions.Tests
                                     _source, 
                                     imageField);
                             }
-                        case AllFieldTipesTemplate.InternalLinkFieldId:
+                        case AllFieldTypesTemplate.InternalLinkFieldId:
                             {
                                 var internalLinkField = CustomFieldMockHelper.MockInternalLinkField(
                                     _internalLinkPath,
@@ -250,7 +250,7 @@ namespace KraftWrapper.Extensions.Tests
             return sitecoreItem.Object;
         }
 
-        public void ValidateObjectWithAllFieldTipes(AllFieldTipesFakeModel result)
+        public void ValidateObjectWithAllFieldTypes(AllFieldTypesFakeModel result)
         {
             Assert.IsNotNull(result);
             Assert.AreEqual(_textValue, result.TextValue);
