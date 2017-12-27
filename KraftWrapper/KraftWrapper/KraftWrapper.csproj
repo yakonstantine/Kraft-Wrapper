@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{904C42DE-3BCA-4E31-AB06-28FF85FCB68E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>KraftWrapper</RootNamespace>
+    <AssemblyName>KraftWrapper</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attributes\SitecoreFieldAttribute.cs" />
+    <Compile Include="Attributes\SitecoreTemplateAttribute.cs" />
+    <Compile Include="Extensions\SitecoreItemExtentions.cs" />
+    <Compile Include="Interfaces\Fields\ISitecoreBaseCustomField.cs" />
+    <Compile Include="Interfaces\Fields\ISitecoreCheckboxField.cs" />
+    <Compile Include="Interfaces\Fields\ISitecoreImageField.cs" />
+    <Compile Include="Interfaces\Fields\ISitecoreInternalLinkField.cs" />
+    <Compile Include="Interfaces\Fields\ISitecoreLinkField.cs" />
+    <Compile Include="Interfaces\Fields\ISitecoreTextField.cs" />
+    <Compile Include="Interfaces\ISitecoreContext.cs" />
+    <Compile Include="Interfaces\ISitecoreDatabase.cs" />
+    <Compile Include="Interfaces\ISitecoreField.cs" />
+    <Compile Include="Interfaces\ISitecoreItem.cs" />
+    <Compile Include="Interfaces\ISitecoreItemUri.cs" />
+    <Compile Include="Interfaces\ISitecoreLanguage.cs" />
+    <Compile Include="Interfaces\ISitecoreSiteContext.cs" />
+    <Compile Include="Interfaces\ISitecoreTemplate.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

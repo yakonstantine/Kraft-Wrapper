@@ -1,0 +1,13 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/KraftWrapper/.vs/KraftWrapper/v15
+/.vs
+/KraftWrapper/KraftWrapper/bin/Debug
+/KraftWrapper/KraftWrapper/obj
+/KraftWrapper/KraftWrapper.Core/bin/Debug
+/KraftWrapper/KraftWrapper.Core/obj
+/KraftWrapper/KraftWrapper.Extensions.Tests/obj
+/KraftWrapper/packages
+/KraftWrapper/KraftWrapper.Extensions.Tests/bin/Debug
