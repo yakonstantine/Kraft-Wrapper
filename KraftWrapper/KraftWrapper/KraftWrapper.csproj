@@ -59,6 +59,7 @@
     <Compile Include="Interfaces\ISitecoreLanguage.cs" />
     <Compile Include="Interfaces\ISitecoreSiteContext.cs" />
     <Compile Include="Interfaces\ISitecoreTemplate.cs" />
+    <Compile Include="Interfaces\ISitecoreFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

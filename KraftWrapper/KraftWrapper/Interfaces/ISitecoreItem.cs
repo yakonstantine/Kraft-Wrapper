@@ -17,7 +17,10 @@ namespace KraftWrapper.Interfaces
         string GetPropertyValue(string name);
         string GetPropertyValue(int index);
         string GetPropertyValue(Guid id);
+
         IList<ISitecoreItem> SelectSubItems(string query = "");
         IList<ISitecoreItem> GetChildren();
+        IList<ISitecoreItem> GetDescendants();
+        IList<ISitecoreItem> GetVersions();
     }
 }

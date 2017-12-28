@@ -30,6 +30,11 @@ namespace KraftWrapper.Core
             get { return _field.Value; }
         }
 
+        public DateTime DateTime
+        {
+            get { return ((DateField)_field).DateTime; }
+        }
+
         public object CastToCustomField(Type type)
         {
             if ((!type.IsClass && !type.IsInterface) || !typeof(ISitecoreBaseCustomField).IsAssignableFrom(type))

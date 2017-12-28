@@ -124,8 +124,44 @@ namespace KraftWrapper.Core
 
         public IList<ISitecoreItem> GetChildren()
         {
-            return _item.GetChildren()
+            var children = _item.GetChildren();
+
+            if (children == null)
+            {
+                return new List<ISitecoreItem>();
+            }
+
+            return children
                 .Select(i => (ISitecoreItem)new SitecoreItem(i))
+                .ToList();
+        }
+
+        public IList<ISitecoreItem> GetDescendants()
+        {
+            var descendants = _item.Axes
+                .GetDescendants();
+
+            if (descendants == null)
+            {
+                return new List<ISitecoreItem>();
+            }
+
+            return descendants
+                .Select(x => (ISitecoreItem)new SitecoreItem(x))
+                .ToList();
+        }
+
+        public IList<ISitecoreItem> GetVersions()
+        {
+            var versions = _item.Versions.GetVersions();
+
+            if (versions == null)
+            {
+                return new List<ISitecoreItem>();
+            }
+
+            return versions
+                .Select(x => (ISitecoreItem)new SitecoreItem(x))
                 .ToList();
         }
     }

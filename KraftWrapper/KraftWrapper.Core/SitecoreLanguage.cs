@@ -29,5 +29,13 @@ namespace KraftWrapper.Core
                 return _language.Name;
             }
         }
+
+        internal Language RawValue
+        {
+            get
+            {
+                return _language;
+            }
+        }
     }
 }

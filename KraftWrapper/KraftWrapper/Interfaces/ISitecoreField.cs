@@ -8,6 +8,7 @@ namespace KraftWrapper.Interfaces
     {
         string Source { get; }
         string Value { get; }
+        DateTime DateTime { get; }
         T CastToCustomField<T>() where T : class, ISitecoreBaseCustomField;
         object CastToCustomField(Type type);
         HtmlString RenderToHtml(string parameters = "");

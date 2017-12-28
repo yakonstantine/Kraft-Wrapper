@@ -58,6 +58,7 @@
     <Compile Include="SitecoreContext.cs" />
     <Compile Include="SitecoreDatabase.cs" />
     <Compile Include="SitecoreExtensions\DataFieldExtensions.cs" />
+    <Compile Include="SitecoreFactory.cs" />
     <Compile Include="SitecoreField.cs" />
     <Compile Include="SitecoreItem.cs" />
     <Compile Include="SitecoreItemUri.cs" />
