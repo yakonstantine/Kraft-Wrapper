@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 
 namespace KraftWrapper.Extensions.Tests
@@ -111,7 +112,7 @@ namespace KraftWrapper.Extensions.Tests
             Assert.AreEqual(textValue, result.TextValue);
 
             Assert.IsNotNull(result.Children);
-            Assert.AreEqual(children.Count, result.Children.Count);
+            Assert.AreEqual(children.Count, result.Children.Count());
 
             foreach(var child in result.Children)
             {

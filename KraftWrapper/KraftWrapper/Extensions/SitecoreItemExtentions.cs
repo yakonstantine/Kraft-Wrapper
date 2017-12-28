@@ -56,16 +56,24 @@ namespace KraftWrapper.Extensions
             foreach (var propertyData in propertyDatas)
             {
                 var propertyInfo = propertyData.PropertyInfo;
+                var propertyType = propertyInfo.PropertyType;
 
-                if (propertyInfo.PropertyType.IsGenericEnumerable())
+                if (propertyType.IsGenericEnumerable())
                 {
-                    var children = ConvertChildren(propertyInfo.PropertyType, item.GetChildren());
+                    var genericArguments = propertyType.GetGenericArguments();
+
+                    if (!genericArguments.Any())
+                    {
+                        continue;
+                    }
+
+                    var children = ConvertChildren(genericArguments[0], item.GetChildren());
 
                     if (children != null)
                     {
                         propertyInfo.SetValue(result, children);
                     }
-
+                    
                     continue;
                 }
 
@@ -111,9 +119,8 @@ namespace KraftWrapper.Extensions
             return result;
         }
 
-        private static IList<object> ConvertChildren(Type propertyType, IList<ISitecoreItem> children)
+        private static IList ConvertChildren(Type childType, IList<ISitecoreItem> children)
         {
-            var childType = propertyType.GetGenericTypeDefinition();
             var childTemplateID = ValidateTypeAndGetTemplateID(childType);
 
             var childrenGroups = children.GroupBy(
@@ -131,9 +138,16 @@ namespace KraftWrapper.Extensions
 
             var childPropertyDatas = GetPropertyDatas(childType);
 
-            return childrenGroup.Items
-                .Select(x => x.ConvertTo(childType, childPropertyDatas))
-                .ToList();
+            var list = (IList)Activator
+                .CreateInstance(typeof(List<>).MakeGenericType(childType));
+
+            foreach(var obj in childrenGroup.Items
+                .Select(x => x.ConvertTo(childType, childPropertyDatas)))
+            {
+                list.Add(obj);
+            }
+
+            return list;
         }
 
         private static void SetFieldValue(object targetObject, ISitecoreItem item, FieldInfo propertyData)
