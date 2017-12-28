@@ -3,7 +3,7 @@ using Sitecore.Data.Fields;
 
 namespace KraftWrapper.Core.Fields
 {
-    public class SitecoreCheckboxField : SitecoreBaseCustomField<CheckboxField>, ISitecoreCheckboxField
+    class SitecoreCheckboxField : SitecoreBaseCustomField<CheckboxField>, ISitecoreCheckboxField
     {
         public SitecoreCheckboxField(CheckboxField field) : base(field)
         {

@@ -6,7 +6,7 @@ using System.Web;
 
 namespace KraftWrapper.Core.Fields
 {
-    public abstract class SitecoreBaseCustomField<T> : ISitecoreBaseCustomField
+    abstract class SitecoreBaseCustomField<T> : ISitecoreBaseCustomField
         where T : CustomField
     {
         protected readonly T _field;

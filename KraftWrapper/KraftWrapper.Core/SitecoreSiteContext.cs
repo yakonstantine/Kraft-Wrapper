@@ -4,7 +4,7 @@ using System;
 
 namespace KraftWrapper.Core
 {
-    public class SitecoreSiteContext : ISitecoreSiteContext
+    class SitecoreSiteContext : ISitecoreSiteContext
     {
         private readonly SiteContext _siteContext;
         private readonly ISitecoreDatabase _sitecoreDatabase;

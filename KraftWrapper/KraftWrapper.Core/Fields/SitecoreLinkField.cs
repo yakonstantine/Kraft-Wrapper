@@ -3,7 +3,7 @@ using Sitecore.Data.Fields;
 
 namespace KraftWrapper.Core.Fields
 {
-    public class SitecoreLinkField : SitecoreBaseCustomField<LinkField>, ISitecoreLinkField
+    class SitecoreLinkField : SitecoreBaseCustomField<LinkField>, ISitecoreLinkField
     {
         public SitecoreLinkField(LinkField field) : base(field)
         {

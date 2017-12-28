@@ -5,7 +5,7 @@ namespace KraftWrapper.Core
 {
     public class SitecoreContext : ISitecoreContext
     {
-        private RenderingContext _renderingContext = RenderingContext.CurrentOrNull;
+        private readonly RenderingContext _renderingContext = RenderingContext.CurrentOrNull;
 
         public ISitecoreItem CurrentItem
         {

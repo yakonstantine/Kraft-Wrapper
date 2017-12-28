@@ -5,7 +5,7 @@ using Sitecore.Links;
 
 namespace KraftWrapper.Core.Fields
 {
-    public class SitecoreInternalLinkField : SitecoreBaseCustomField<InternalLinkField>, ISitecoreInternalLinkField
+    class SitecoreInternalLinkField : SitecoreBaseCustomField<InternalLinkField>, ISitecoreInternalLinkField
     {
         public SitecoreInternalLinkField(InternalLinkField field) : base(field)
         {

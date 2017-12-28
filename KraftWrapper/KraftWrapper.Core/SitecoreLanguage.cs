@@ -5,7 +5,7 @@ using System.Globalization;
 
 namespace KraftWrapper.Core
 {
-    public class SitecoreLanguage : ISitecoreLanguage
+    class SitecoreLanguage : ISitecoreLanguage
     {
         private readonly Language _language;
 
@@ -30,7 +30,7 @@ namespace KraftWrapper.Core
             }
         }
 
-        internal Language RawValue
+        public Language RawValue
         {
             get
             {

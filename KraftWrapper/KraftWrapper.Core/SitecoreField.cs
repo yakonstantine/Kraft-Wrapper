@@ -8,7 +8,7 @@ using System.Web;
 
 namespace KraftWrapper.Core
 {
-    public class SitecoreField : ISitecoreField
+    class SitecoreField : ISitecoreField
     {
         private readonly Field _field;
 

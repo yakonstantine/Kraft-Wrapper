@@ -5,7 +5,7 @@ using Sitecore.Resources.Media;
 
 namespace KraftWrapper.Core.Fields
 {
-    public class SitecoreImageField : SitecoreBaseCustomField<ImageField>, ISitecoreImageField
+    class SitecoreImageField : SitecoreBaseCustomField<ImageField>, ISitecoreImageField
     {
         public SitecoreImageField(ImageField field) : base(field)
         {

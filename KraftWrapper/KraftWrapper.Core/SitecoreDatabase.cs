@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace KraftWrapper.Core
 {
-    public class SitecoreDatabase : ISitecoreDatabase
+    class SitecoreDatabase : ISitecoreDatabase
     {
         private Database _database;
 
@@ -53,7 +53,8 @@ namespace KraftWrapper.Core
 
         public ISitecoreItem GetItem(string path, ISitecoreLanguage language)
         {
-            var item = _database.GetItem(path, ((SitecoreLanguage)language).RawValue);
+            var lang = TryToCastToDefaultImplementation(language);
+            var item = _database.GetItem(path, lang.RawValue);
 
             return CreateSitecoreItem(item);
         }
@@ -66,8 +67,10 @@ namespace KraftWrapper.Core
 
         public ISitecoreItem GetItem(Guid id, ISitecoreLanguage language)
         {
+            var lang = TryToCastToDefaultImplementation(language);
+
             var sitecoreId = new ID(id);
-            var item = _database.GetItem(sitecoreId, ((SitecoreLanguage)language).RawValue);
+            var item = _database.GetItem(sitecoreId, lang.RawValue);
 
             return CreateSitecoreItem(item);
         }
@@ -80,6 +83,18 @@ namespace KraftWrapper.Core
             }
 
             return new SitecoreItem(item);
+        }
+
+        private static SitecoreLanguage TryToCastToDefaultImplementation(ISitecoreLanguage language)
+        {
+            var defaultImplementation = language as SitecoreLanguage;
+
+            if (defaultImplementation == null)
+            {
+                throw new ArgumentException("The language input parameter is not a defaul implamantation of ISitecoreLanguage.");
+            }
+
+            return defaultImplementation;
         }
     }
 }

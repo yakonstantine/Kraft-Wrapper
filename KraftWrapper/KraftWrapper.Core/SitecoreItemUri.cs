@@ -4,7 +4,7 @@ using System;
 
 namespace KraftWrapper.Core
 {
-    public class SitecoreItemUri : ISitecoreItemUri
+    class SitecoreItemUri : ISitecoreItemUri
     {
         private readonly ItemUri _itemUri;
 

@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace KraftWrapper.Core
 {
-    public class SitecoreItem : ISitecoreItem
+    class SitecoreItem : ISitecoreItem
     {
         private Item _item;
 
