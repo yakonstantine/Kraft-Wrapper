@@ -62,18 +62,13 @@ namespace KraftWrapper.Extensions
                 {
                     var genericArguments = propertyType.GetGenericArguments();
 
-                    if (!genericArguments.Any())
-                    {
-                        continue;
-                    }
-
                     var children = ConvertChildren(genericArguments[0], item.GetChildren());
 
                     if (children != null)
                     {
                         propertyInfo.SetValue(result, children);
                     }
-                    
+
                     continue;
                 }
 
@@ -89,7 +84,7 @@ namespace KraftWrapper.Extensions
 
             foreach (var propertyInfo in type.GetProperties())
             {
-                if (propertyInfo.PropertyType != typeof(string) 
+                if (propertyInfo.PropertyType != typeof(string)
                     && typeof(IEnumerable).IsAssignableFrom(propertyInfo.PropertyType))
                 {
                     result.Add(new FieldInfo
@@ -121,27 +116,23 @@ namespace KraftWrapper.Extensions
 
         private static IList ConvertChildren(Type childType, IList<ISitecoreItem> children)
         {
-            var childTemplateID = ValidateTypeAndGetTemplateID(childType);
+            var childTemplateId = ValidateTypeAndGetTemplateID(childType);
 
             var childrenGroups = children.GroupBy(
                 x => x.TemplateId,
                 x => x,
-                (key, items) => new { TemplateID = key, Items = items.ToList() });
+                (key, items) => new { TemplateId = key, Items = items.ToList() });
 
-            if (!childrenGroups.Any())
-                return null;
+            var childrenGroup = childrenGroups.FirstOrDefault(x => x.TemplateId == childTemplateId);
 
-            var childrenGroup = childrenGroups.FirstOrDefault(x => x.TemplateID == childTemplateID);
+            var list = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(childType));
 
-            if (childrenGroup.TemplateID != childTemplateID)
-                return null;
+            if (childrenGroup == null)
+                return list;
 
             var childfieldInfos = GetFieldInfos(childType);
 
-            var list = (IList)Activator
-                .CreateInstance(typeof(List<>).MakeGenericType(childType));
-
-            foreach(var obj in childrenGroup.Items
+            foreach (var obj in childrenGroup.Items
                 .Select(x => x.ConvertTo(childType, childfieldInfos)))
             {
                 list.Add(obj);
@@ -205,7 +196,7 @@ namespace KraftWrapper.Extensions
 
                 return valueLower == "1" || valueLower == "true";
             }
-            
+
             if (propertyType == typeof(DateTime))
             {
                 return DateTime.Parse(fieldValue);
@@ -216,7 +207,8 @@ namespace KraftWrapper.Extensions
 
         private static bool IsSimple(this Type type)
         {
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+            if (type.IsGenericType
+                && type.GetGenericTypeDefinition() == typeof(Nullable<>))
             {
                 return IsSimple(type.GetGenericArguments()[0]);
             }

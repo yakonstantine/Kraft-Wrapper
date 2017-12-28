@@ -42,10 +42,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IDsStorage\AllFieldTypesTemplate.cs" />
-    <Compile Include="IDsStorage\TemplateWithChildren.cs" />
-    <Compile Include="Models\AllFieldTypesFakeModel.cs" />
-    <Compile Include="Models\TemplateWithChildrenFakeModel.cs" />
+    <Compile Include="IDsStorage\IDsForModelWithAllFieldTypes.cs" />
+    <Compile Include="IDsStorage\IDsForModelWithoutFieldAttribute.cs" />
+    <Compile Include="IDsStorage\IDsForModelWithoutTempalteAttribute.cs" />
+    <Compile Include="IDsStorage\IDsForModelWithTwoChildrenLists.cs" />
+    <Compile Include="IDsStorage\IDsForModelWithTwoFields.cs" />
+    <Compile Include="IDsStorage\IDsForModelWithChildList.cs" />
+    <Compile Include="Models\FakeModelWithAllFieldTypes.cs" />
+    <Compile Include="Models\FakeModelWithoutFieldAttribute.cs" />
+    <Compile Include="Models\FakeModelWithoutTempalteAttribute.cs" />
+    <Compile Include="Models\FakeModelWithTwoChildrenLists.cs" />
+    <Compile Include="Models\FakeModelWithTwoFields.cs" />
+    <Compile Include="Models\FakeModelWithOneChildList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
