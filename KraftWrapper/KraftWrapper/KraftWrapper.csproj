@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Attributes\SitecoreFieldAttribute.cs" />
     <Compile Include="Attributes\SitecoreTemplateAttribute.cs" />
+    <Compile Include="Extensions\SitecoreIDExpensions.cs" />
     <Compile Include="Extensions\SitecoreItemExtentions.cs" />
     <Compile Include="Interfaces\Fields\ISitecoreBaseCustomField.cs" />
     <Compile Include="Interfaces\Fields\ISitecoreCheckboxField.cs" />

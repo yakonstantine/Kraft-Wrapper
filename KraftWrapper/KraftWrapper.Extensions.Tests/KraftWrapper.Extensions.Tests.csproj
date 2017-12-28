@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SitecoreIDExpensionsTests.cs" />
     <Compile Include="SitecoreItemExtentionsTests.cs" />
   </ItemGroup>
   <ItemGroup>
