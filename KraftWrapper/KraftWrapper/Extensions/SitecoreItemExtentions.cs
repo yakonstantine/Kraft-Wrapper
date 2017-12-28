@@ -24,9 +24,9 @@ namespace KraftWrapper.Extensions
             if (item.TemplateId != templateId)
                 return null;
 
-            var propertyDatas = GetPropertyDatas(type);
+            var fieldInfos = GetFieldInfos(type);
 
-            return item.ConvertTo(type, propertyDatas);
+            return item.ConvertTo(type, fieldInfos);
         }
 
         private static Guid ValidateTypeAndGetTemplateID(Type type)
@@ -49,13 +49,13 @@ namespace KraftWrapper.Extensions
             return new Guid(sitecoreTemplateAttribute.TemplateId);
         }
 
-        private static object ConvertTo(this ISitecoreItem item, Type type, IList<FieldInfo> propertyDatas)
+        private static object ConvertTo(this ISitecoreItem item, Type type, IList<FieldInfo> fieldInfos)
         {
             var result = Activator.CreateInstance(type);
 
-            foreach (var propertyData in propertyDatas)
+            foreach (var fieldInfo in fieldInfos)
             {
-                var propertyInfo = propertyData.PropertyInfo;
+                var propertyInfo = fieldInfo.PropertyInfo;
                 var propertyType = propertyInfo.PropertyType;
 
                 if (propertyType.IsGenericEnumerable())
@@ -77,13 +77,13 @@ namespace KraftWrapper.Extensions
                     continue;
                 }
 
-                SetFieldValue(result, item, propertyData);
+                SetFieldValue(result, item, fieldInfo);
             }
 
             return result;
         }
 
-        private static IList<FieldInfo> GetPropertyDatas(Type type)
+        private static IList<FieldInfo> GetFieldInfos(Type type)
         {
             var result = new List<FieldInfo>();
 
@@ -136,13 +136,13 @@ namespace KraftWrapper.Extensions
             if (childrenGroup.TemplateID != childTemplateID)
                 return null;
 
-            var childPropertyDatas = GetPropertyDatas(childType);
+            var childfieldInfos = GetFieldInfos(childType);
 
             var list = (IList)Activator
                 .CreateInstance(typeof(List<>).MakeGenericType(childType));
 
             foreach(var obj in childrenGroup.Items
-                .Select(x => x.ConvertTo(childType, childPropertyDatas)))
+                .Select(x => x.ConvertTo(childType, childfieldInfos)))
             {
                 list.Add(obj);
             }
@@ -150,10 +150,10 @@ namespace KraftWrapper.Extensions
             return list;
         }
 
-        private static void SetFieldValue(object targetObject, ISitecoreItem item, FieldInfo propertyData)
+        private static void SetFieldValue(object targetObject, ISitecoreItem item, FieldInfo fieldInfo)
         {
-            var value = GetFieldValue(propertyData.PropertyInfo.PropertyType, item, propertyData.FieldId);
-            propertyData.PropertyInfo.SetValue(targetObject, value);
+            var value = GetFieldValue(fieldInfo.PropertyInfo.PropertyType, item, fieldInfo.FieldId);
+            fieldInfo.PropertyInfo.SetValue(targetObject, value);
         }
 
         private static object GetFieldValue(Type propertyType, ISitecoreItem item, Guid fieldId)
