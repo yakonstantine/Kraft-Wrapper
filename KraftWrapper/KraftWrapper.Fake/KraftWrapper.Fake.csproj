@@ -43,12 +43,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IDsStorage\IDsForModelWithAllFieldTypes.cs" />
+    <Compile Include="IDsStorage\IDsForModelWithNamedAttributeParameters.cs" />
     <Compile Include="IDsStorage\IDsForModelWithoutFieldAttribute.cs" />
     <Compile Include="IDsStorage\IDsForModelWithoutTempalteAttribute.cs" />
     <Compile Include="IDsStorage\IDsForModelWithTwoChildrenLists.cs" />
     <Compile Include="IDsStorage\IDsForModelWithTwoFields.cs" />
     <Compile Include="IDsStorage\IDsForModelWithChildList.cs" />
     <Compile Include="Models\FakeModelWithAllFieldTypes.cs" />
+    <Compile Include="Models\FakeModelWithNamedAttributeParameters.cs" />
     <Compile Include="Models\FakeModelWithoutFieldAttribute.cs" />
     <Compile Include="Models\FakeModelWithoutTempalteAttribute.cs" />
     <Compile Include="Models\FakeModelWithTwoChildrenLists.cs" />

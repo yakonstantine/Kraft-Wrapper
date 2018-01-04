@@ -33,6 +33,14 @@ namespace KraftWrapper.Core
             }
         }
 
+        public string TemplateName
+        {
+            get
+            {
+                return _item.TemplateName;
+            }
+        }
+
         public string Name
         {
             get

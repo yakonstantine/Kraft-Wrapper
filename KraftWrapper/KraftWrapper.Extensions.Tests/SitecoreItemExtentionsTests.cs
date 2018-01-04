@@ -85,7 +85,7 @@ namespace KraftWrapper.Extensions.Tests
                 .Setup(x => x.GetField(It.IsAny<Guid>()))
                 .Returns((Guid id) =>
                 {
-                    switch (ConvertToIDString(id))
+                    switch (id.ToIDString())
                     {
                         case IDsForModelWithChildList.TextValueId:
                             {
@@ -138,7 +138,7 @@ namespace KraftWrapper.Extensions.Tests
                 .Setup(x => x.GetField(It.IsAny<Guid>()))
                 .Returns((Guid id) =>
                 {
-                    switch (ConvertToIDString(id))
+                    switch (id.ToIDString())
                     {
                         case IDsForModelWithTwoChildrenLists.TextValueId:
                             {
@@ -196,7 +196,7 @@ namespace KraftWrapper.Extensions.Tests
                 .Setup(x => x.GetField(It.IsAny<Guid>()))
                 .Returns((Guid id) =>
                 {
-                    switch (ConvertToIDString(id))
+                    switch (id.ToIDString())
                     {
                         case IDsForModelWithTwoChildrenLists.TextValueId:
                             {
@@ -269,7 +269,7 @@ namespace KraftWrapper.Extensions.Tests
                 .Setup(x => x.GetField(It.IsAny<Guid>()))
                 .Returns((Guid id) =>
                 {
-                    switch (ConvertToIDString(id))
+                    switch (id.ToIDString())
                     {
                         case IDsForModelWithoutFieldAttribute.TextValueFieldId:
                             {
@@ -301,7 +301,7 @@ namespace KraftWrapper.Extensions.Tests
                 .Setup(x => x.GetField(It.IsAny<Guid>()))
                 .Returns((Guid id) =>
                 {
-                    switch (ConvertToIDString(id))
+                    switch (id.ToIDString())
                     {
                         case IDsForModelWithTwoFields.TextValueFieldId:
                             {
@@ -323,6 +323,91 @@ namespace KraftWrapper.Extensions.Tests
             Assert.AreEqual(default(int), result.IntegerValue);
         }
 
+        [TestMethod]
+        public void Mapping_IfModelWithNamedAttributeParameters()
+        {
+            #region Setup ISitecoreItem
+
+            var textField = FieldMockHelper.MockSitecoreField(_textValue, _source);
+            var integerField = FieldMockHelper.MockSitecoreField(_integerValue.ToString(), _source);
+
+            var sitecoreItem = new Mock<ISitecoreItem>();
+            sitecoreItem
+                .Setup(x => x.TemplateId)
+                .Returns(new Guid(IDsForModelWithNamedAttributeParameters.TemplateId));
+            sitecoreItem
+               .Setup(x => x.TemplateName)
+               .Returns(IDsForModelWithNamedAttributeParameters.TemplateName);
+            sitecoreItem
+                .Setup(x => x.GetField(It.IsAny<Guid>()))
+                .Returns((Guid id) =>
+                {
+                    switch (id.ToIDString())
+                    {
+                        case IDsForModelWithNamedAttributeParameters.TextValueFieldId:
+                            {
+                                return textField;
+                            }
+                        case IDsForModelWithNamedAttributeParameters.IntegerValueFieldId:
+                            {
+                                return integerField;
+                            }
+                        default:
+                            {
+                                return null;
+                            }
+                    }
+                });
+            sitecoreItem
+               .Setup(x => x.GetField(It.IsAny<string>()))
+               .Returns((string fieldName) =>
+               {
+                   switch (fieldName)
+                   {
+                       case IDsForModelWithNamedAttributeParameters.TextValueFieldName:
+                           {
+                               return textField;
+                           }
+                       case IDsForModelWithNamedAttributeParameters.IntegerValueFieldName:
+                           {
+                               return integerField;
+                           }
+                       default:
+                           {
+                               return null;
+                           }
+                   }
+               });
+            sitecoreItem
+               .Setup(x => x.GetField(It.IsAny<int>()))
+               .Returns((int fieldIndex) =>
+               {
+                   switch (fieldIndex)
+                   {
+                       case IDsForModelWithNamedAttributeParameters.TextValueFieldIndex:
+                           {
+                               return textField;
+                           }
+                       case IDsForModelWithNamedAttributeParameters.IntegerValueFieldIndex:
+                           {
+                               return integerField;
+                           }
+                       default:
+                           {
+                               return null;
+                           }
+                   }
+               });
+
+            #endregion
+
+            var result = sitecoreItem.Object.As<FakeModelWithNamedAttributeParameters>();
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(_textValue, result.TextValue);
+            Assert.AreEqual(_integerValue, result.IntegerValue);
+        }
+
         public Mock<ISitecoreItem> SetupItemWithAllFieldTypes()
         {
             var targetItem = new Mock<ISitecoreItem>();
@@ -340,7 +425,7 @@ namespace KraftWrapper.Extensions.Tests
                 .Setup(x => x.GetField(It.IsAny<Guid>()))
                 .Returns((Guid id) =>
                 {
-                    switch (ConvertToIDString(id))
+                    switch (id.ToIDString())
                     {
                         case IDsForModelWithAllFieldTypes.TextValueFieldId:
                             {
@@ -469,7 +554,7 @@ namespace KraftWrapper.Extensions.Tests
                 .Setup(x => x.GetField(It.IsAny<Guid>()))
                 .Returns((Guid id) =>
                 {
-                    switch (ConvertToIDString(id))
+                    switch (id.ToIDString())
                     {
                         case IDsForModelWithTwoFields.TextValueFieldId:
                             {
@@ -546,11 +631,6 @@ namespace KraftWrapper.Extensions.Tests
             Assert.IsNotNull(result);
             Assert.AreEqual(_textValue, result.TextValue);
             Assert.AreEqual(_integerValue, result.IntegerValue);
-        }
-
-        private static string ConvertToIDString(Guid source)
-        {
-            return $"{{{source.ToString().ToUpper()}}}";
         }
 
         private static void ValidateHtmlString(HtmlString expected, HtmlString actual)

@@ -6,5 +6,6 @@ namespace KraftWrapper.Attributes
     public sealed class SitecoreTemplateAttribute : Attribute
     {
         public string TemplateId { get; set; }
+        public string TemplateName { get; set; }
     }
 }
