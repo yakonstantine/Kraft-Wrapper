@@ -59,7 +59,7 @@ namespace KraftWrapper.Extensions.Tests
         #endregion
 
         [TestMethod]
-        public void Mapping_ValidateAllFieldTypes()
+        public void Mapping_ValidateModelWithAllFieldTypes()
         {
             var sitecoreItem = CreateItemWithAllFieldTypes();
 
@@ -324,7 +324,7 @@ namespace KraftWrapper.Extensions.Tests
         }
 
         [TestMethod]
-        public void Mapping_IfModelWithNamedAttributeParameters()
+        public void Mapping_ValidateModelWithNamedAttributeParameters()
         {
             #region Setup ISitecoreItem
 
