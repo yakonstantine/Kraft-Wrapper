@@ -8,9 +8,7 @@ It is interface based, model of the Sitecore API, which is included auto mapping
 A key feature of the implementation is a lightweight, you don't need to do something extra to use Kraft Wrapper, 
 just download package from NuGet and do code.
 
-```NuGet
-PM> Install-Package KraftWrapper -Version 0.1.0-beta
-```
+You can download the package from <a href="https://www.nuget.org/packages/KraftWrapper/" target="_blank">NuGet</a>
 
 ## Example of usage
 ### Creation of a Model class
