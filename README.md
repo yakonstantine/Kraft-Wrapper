@@ -6,9 +6,7 @@ Kraft Wrapper is a library that make Sitecore API injectable and unit testable.
 It is interface based, model of the Sitecore API, which is included auto mapping from an item to your model class.
 
 A key feature of the implementation is a lightweight, you don't need to do something extra to use Kraft Wrapper, 
-just download package from NuGet and do code.
-
-You can download the package from <a href="https://www.nuget.org/packages/KraftWrapper/" target="_blank">NuGet</a>
+just download package from <a href="https://www.nuget.org/packages/KraftWrapper/" target="_blank">NuGet</a> and do code.
 
 ## Example of usage
 ### Creation of a Model class
