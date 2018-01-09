@@ -408,6 +408,56 @@ namespace KraftWrapper.Extensions.Tests
             Assert.AreEqual(_integerValue, result.IntegerValue);
         }
 
+        [TestMethod]
+        public void Mapping_ValidateModelChild()
+        {
+            #region Setup ISitecoreItem
+
+            var sitecoreItem = new Mock<ISitecoreItem>();
+            sitecoreItem
+                .Setup(x => x.TemplateId)
+                .Returns(new Guid(IDsForModelChild.TemplateId));
+            sitecoreItem
+                .Setup(x => x.GetField(It.IsAny<Guid>()))
+                .Returns((Guid id) =>
+                {
+                    switch (id.ToIDString())
+                    {
+                        case IDsForModelWithTwoFields.TextValueFieldId:
+                            {
+                                return FieldMockHelper.MockSitecoreField(
+                                    _textValue,
+                                    _source);
+                            }
+                        case IDsForModelWithTwoFields.IntegerValueFieldId:
+                            {
+                                return FieldMockHelper.MockSitecoreField(
+                                    _integerValue.ToString(),
+                                    _source);
+                            }
+                        case IDsForModelChild.BooleanValueFieldId:
+                            {
+                                return FieldMockHelper.MockSitecoreField(
+                                    _booleanValue.ToString(),
+                                    _source);
+                            }
+                        default:
+                            {
+                                return null;
+                            }
+                    }
+                });
+
+            #endregion
+
+            var result = sitecoreItem.Object.As<FakeModelChild>();
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(_textValue, result.TextValue);
+            Assert.AreEqual(_integerValue, result.IntegerValue);
+            Assert.AreEqual(_booleanValue, result.BooleanValue);
+        }
+
         public Mock<ISitecoreItem> SetupItemWithAllFieldTypes()
         {
             var targetItem = new Mock<ISitecoreItem>();
