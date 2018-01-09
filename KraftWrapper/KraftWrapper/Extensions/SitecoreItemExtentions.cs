@@ -1,4 +1,5 @@
 ﻿using KraftWrapper.Attributes;
+using KraftWrapper.Extensions.Helpers;
 using KraftWrapper.Interfaces;
 using System;
 using System.Collections;
@@ -10,7 +11,7 @@ using System.Web;
 namespace KraftWrapper.Extensions
 {
     public static class SitecoreItemExtentions
-    {
+    { 
         public static T As<T>(this ISitecoreItem item)
             where T : class, ISitecoreTemplate, new()
         {
@@ -18,42 +19,22 @@ namespace KraftWrapper.Extensions
         }
 
         public static object As(this ISitecoreItem item, Type type)
-        {
-            var templateId = ValidateTypeAndGetTemplateID(type);
+        { 
+            var sitecoreTemplateAttributeInfo = SitecoreTemplateAttributesCache.TryToGetInfoForAType(type);
 
-            if (item.TemplateId != templateId)
+            if (!IsValidTemplate(sitecoreTemplateAttributeInfo.SitecoreTemplateAttribute, item.TemplateId, item.TemplateName))
+            {
                 return null;
-
-            var fieldInfos = GetFieldInfos(type);
-
-            return item.ConvertTo(type, fieldInfos);
-        }
-
-        private static Guid ValidateTypeAndGetTemplateID(Type type)
-        {
-            if ((!type.IsClass && !type.IsInterface)
-                || !typeof(ISitecoreTemplate).IsAssignableFrom(type)
-                || type.GetConstructor(Type.EmptyTypes) == null)
-            {
-                throw new ArgumentException($"Type {type.Name} is not a class or is not inherit from ISitecoreTemplate or does not have default constructor.");
             }
 
-            var sitecoreTemplateAttribute = (SitecoreTemplateAttribute)Attribute
-                .GetCustomAttribute(type, typeof(SitecoreTemplateAttribute));
+            return ConvertItemToModel(item, sitecoreTemplateAttributeInfo);
+        }  
 
-            if (sitecoreTemplateAttribute == null)
-            {
-                throw new ArgumentNullException("SitecoreTemplateAttribute was not found.");
-            }
-
-            return new Guid(sitecoreTemplateAttribute.TemplateId);
-        }
-
-        private static object ConvertTo(this ISitecoreItem item, Type type, IList<FieldInfo> fieldInfos)
+        private static object ConvertItemToModel(ISitecoreItem item, SitecoreTemplateAttributeInfo sitecoreTemplateAttributeInfo)
         {
-            var result = Activator.CreateInstance(type);
+            var result = Activator.CreateInstance(sitecoreTemplateAttributeInfo.Type);
 
-            foreach (var fieldInfo in fieldInfos)
+            foreach (var fieldInfo in sitecoreTemplateAttributeInfo.SitecoreFieldAttributeInfos)
             {
                 var propertyInfo = fieldInfo.PropertyInfo;
                 var propertyType = propertyInfo.PropertyType;
@@ -78,62 +59,24 @@ namespace KraftWrapper.Extensions
             return result;
         }
 
-        private static IList<FieldInfo> GetFieldInfos(Type type)
-        {
-            var result = new List<FieldInfo>();
-
-            foreach (var propertyInfo in type.GetProperties())
-            {
-                if (propertyInfo.PropertyType != typeof(string)
-                    && typeof(IEnumerable).IsAssignableFrom(propertyInfo.PropertyType))
-                {
-                    result.Add(new FieldInfo
-                    {
-                        PropertyInfo = propertyInfo
-                    });
-
-                    continue;
-                }
-
-                var sitecoreFieldAttribute = ((SitecoreFieldAttribute[])propertyInfo
-                .GetCustomAttributes(typeof(SitecoreFieldAttribute), false))
-                .FirstOrDefault();
-
-                if (sitecoreFieldAttribute == null)
-                {
-                    throw new ArgumentNullException("SitecoreFieldAttribute was not found.");
-                }
-
-                result.Add(new FieldInfo
-                {
-                    PropertyInfo = propertyInfo,
-                    FieldId = new Guid(sitecoreFieldAttribute.FieldId)
-                });
-            }
-
-            return result;
-        }
-
         private static IList ConvertChildren(Type childType, IList<ISitecoreItem> children)
         {
-            var childTemplateId = ValidateTypeAndGetTemplateID(childType);
+            var childsitecoreTemplateAttributeInfo = SitecoreTemplateAttributesCache.TryToGetInfoForAType(childType);
 
             var childrenGroups = children.GroupBy(
-                x => x.TemplateId,
+                x => new { x.TemplateId, x.TemplateName },
                 x => x,
-                (key, items) => new { TemplateId = key, Items = items.ToList() });
+                (key, items) => new { Template = key, Items = items.ToList() });
 
-            var childrenGroup = childrenGroups.FirstOrDefault(x => x.TemplateId == childTemplateId);
+            var childrenGroup = childrenGroups.FirstOrDefault(x => IsValidTemplate(childsitecoreTemplateAttributeInfo.SitecoreTemplateAttribute, x.Template.TemplateId, x.Template.TemplateName));
 
             var list = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(childType));
 
             if (childrenGroup == null)
                 return list;
 
-            var childfieldInfos = GetFieldInfos(childType);
-
             foreach (var obj in childrenGroup.Items
-                .Select(x => x.ConvertTo(childType, childfieldInfos)))
+                .Select(x => ConvertItemToModel(x, childsitecoreTemplateAttributeInfo)))
             {
                 list.Add(obj);
             }
@@ -141,15 +84,28 @@ namespace KraftWrapper.Extensions
             return list;
         }
 
-        private static void SetFieldValue(object targetObject, ISitecoreItem item, FieldInfo fieldInfo)
+        private static void SetFieldValue(object targetObject, ISitecoreItem item, SitecoreFieldAttributeInfo sitecoreFieldAttributeInfo)
         {
-            var value = GetFieldValue(fieldInfo.PropertyInfo.PropertyType, item, fieldInfo.FieldId);
-            fieldInfo.PropertyInfo.SetValue(targetObject, value);
+            var value = GetSitecoreItemFieldValue(sitecoreFieldAttributeInfo.PropertyInfo.PropertyType, item, sitecoreFieldAttributeInfo.FieldAttribute);
+            sitecoreFieldAttributeInfo.PropertyInfo.SetValue(targetObject, value);
         }
 
-        private static object GetFieldValue(Type propertyType, ISitecoreItem item, Guid fieldId)
+        private static object GetSitecoreItemFieldValue(Type propertyType, ISitecoreItem item, SitecoreFieldAttribute fieldAttribute)
         {
-            var field = item.GetField(fieldId);
+            ISitecoreField field = null;
+
+            if (!string.IsNullOrEmpty(fieldAttribute.FieldId))
+            {
+                field = item.GetField(new Guid(fieldAttribute.FieldId));
+            }
+            else if (!string.IsNullOrEmpty(fieldAttribute.FieldName))
+            {
+                field = item.GetField(fieldAttribute.FieldName);
+            }
+            else
+            {
+                field = item.GetField(fieldAttribute.FieldIndex);
+            }
 
             if (field == null)
                 return null;
@@ -205,6 +161,16 @@ namespace KraftWrapper.Extensions
             return null;
         }
 
+        private static bool IsValidTemplate(SitecoreTemplateAttribute templateAttribute, Guid templateId, string templateName)
+        {
+            if (string.IsNullOrEmpty(templateAttribute.TemplateId))
+            {
+                return templateName == templateAttribute.TemplateName;
+            }
+
+            return templateId == new Guid(templateAttribute.TemplateId);
+        }
+
         private static bool IsSimple(this Type type)
         {
             if (type.IsGenericType
@@ -258,12 +224,6 @@ namespace KraftWrapper.Extensions
             }
 
             return false;
-        }
-
-        private class FieldInfo
-        {
-            public PropertyInfo PropertyInfo { get; set; }
-            public Guid FieldId { get; set; }
         }
     }
 }

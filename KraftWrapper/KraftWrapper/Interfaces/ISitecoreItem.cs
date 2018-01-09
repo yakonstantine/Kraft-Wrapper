@@ -7,6 +7,7 @@ namespace KraftWrapper.Interfaces
     {
         Guid Id { get; }
         Guid TemplateId { get; }
+        string TemplateName { get; }
         string Name { get; }
         string DisplayName { get; }
         ISitecoreItemUri ItemUri { get; }
