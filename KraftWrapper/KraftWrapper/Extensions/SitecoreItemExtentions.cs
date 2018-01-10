@@ -1,5 +1,5 @@
 ﻿using KraftWrapper.Attributes;
-using KraftWrapper.Extensions.Helpers;
+using KraftWrapper.Helpers;
 using KraftWrapper.Interfaces;
 using System;
 using System.Collections;

@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace KraftWrapper.Extensions.Helpers
+namespace KraftWrapper.Helpers
 {
     class SitecoreTemplateAttributeInfo
     {
