@@ -1,22 +1,29 @@
 ﻿using KraftWrapper.Interfaces;
+using Sitecore.Data;
+using Sitecore.Data.Items;
 using Sitecore.Mvc.Presentation;
+using Sitecore.Sites;
 
 namespace KraftWrapper.Core
 {
     public class SitecoreContext : ISitecoreContext
     {
+        private readonly Item _contextItem = Sitecore.Context.Item;
+        private readonly Database _contextDatabase = Sitecore.Context.Database;
+        private readonly SiteContext _siteContext = Sitecore.Context.Site;
+
         private readonly RenderingContext _renderingContext = RenderingContext.CurrentOrNull;
 
         public ISitecoreItem CurrentItem
         {
             get
             {
-                if (Sitecore.Context.Item == null)
+                if (_contextItem == null)
                 {
                     return null;
                 }
 
-                return new SitecoreItem(Sitecore.Context.Item);
+                return new SitecoreItem(_contextItem);
             }
         }
 
@@ -24,12 +31,12 @@ namespace KraftWrapper.Core
         {
             get
             {
-                if (Sitecore.Context.Database == null)
+                if (_contextDatabase == null)
                 {
                     return null;
                 }
 
-                return new SitecoreDatabase(Sitecore.Context.Database);
+                return new SitecoreDatabase(_contextDatabase);
             }
         }
 
@@ -51,12 +58,12 @@ namespace KraftWrapper.Core
         {
             get
             {
-                if (Sitecore.Context.Site == null)
+                if (_siteContext == null)
                 {
                     return null;
                 }
 
-                return this.Database.GetItem(Sitecore.Context.Site.StartPath);
+                return this.Database.GetItem(_siteContext.StartPath);
             }
         }
 
@@ -64,20 +71,12 @@ namespace KraftWrapper.Core
         {
             get
             {
-                if (Sitecore.Context.Site == null)
+                if (_siteContext == null)
                 {
                     return null;
                 }
 
-                return new SitecoreSiteContext(Sitecore.Context.Site, this.Database);
-            }
-        }
-
-        public bool IsPreview
-        {
-            get
-            {
-                return Sitecore.Context.PageMode.IsPreview;
+                return new SitecoreSiteContext(_siteContext, this.Database);
             }
         }
 
@@ -107,13 +106,9 @@ namespace KraftWrapper.Core
             }
         }
 
-        public bool IsExperienceEditor
-        {
-            get
-            {
-                return Sitecore.Context.PageMode.IsExperienceEditor;
-            }
-        }
+        public bool IsExperienceEditor { get; } = Sitecore.Context.PageMode.IsExperienceEditor;
+
+        public bool IsPreview { get; } = Sitecore.Context.PageMode.IsPreview;
 
         private bool CanUseRenderingContext
         {
