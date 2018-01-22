@@ -3,6 +3,8 @@ using Sitecore.Data;
 using Sitecore.Data.Items;
 using Sitecore.Mvc.Presentation;
 using Sitecore.Sites;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace KraftWrapper.Core
 {
@@ -13,6 +15,8 @@ namespace KraftWrapper.Core
         private readonly SiteContext _siteContext = Sitecore.Context.Site;
 
         private readonly RenderingContext _renderingContext = RenderingContext.CurrentOrNull;
+
+        private IDictionary<string, string> _renderingParameters = new Dictionary<string, string>();
 
         public ISitecoreItem CurrentItem
         {
@@ -80,7 +84,7 @@ namespace KraftWrapper.Core
             }
         }
 
-        public RenderingParameters Parameters
+        public IDictionary<string, string> RenderingParameters
         {
             get
             {
@@ -89,7 +93,13 @@ namespace KraftWrapper.Core
                     return null;
                 }
 
-                return _renderingContext.Rendering.Parameters;
+                if (!_renderingParameters.Any())
+                {
+                    _renderingParameters = ((IEnumerable<KeyValuePair<string, string>>)_renderingContext.Rendering.Parameters)
+                        .ToDictionary(x => x.Key, x => x.Value);
+                }
+
+                return _renderingParameters;
             }
         }
 
