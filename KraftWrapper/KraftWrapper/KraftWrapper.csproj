@@ -44,9 +44,9 @@
   <ItemGroup>
     <Compile Include="Attributes\SitecoreFieldAttribute.cs" />
     <Compile Include="Attributes\SitecoreTemplateAttribute.cs" />
-    <Compile Include="Extensions\Helpers\SitecoreTemplateAttributeInfo.cs" />
-    <Compile Include="Extensions\Helpers\SitecoreFieldAttributeInfo.cs" />
-    <Compile Include="Extensions\Helpers\SitecoreTemplateAttributesCache.cs" />
+    <Compile Include="Helpers\SitecoreTemplateAttributeInfo.cs" />
+    <Compile Include="Helpers\SitecoreFieldAttributeInfo.cs" />
+    <Compile Include="Helpers\SitecoreTemplateAttributesCache.cs" />
     <Compile Include="Extensions\SitecoreIDExpensions.cs" />
     <Compile Include="Extensions\SitecoreItemExtentions.cs" />
     <Compile Include="Interfaces\Fields\ISitecoreBaseCustomField.cs" />

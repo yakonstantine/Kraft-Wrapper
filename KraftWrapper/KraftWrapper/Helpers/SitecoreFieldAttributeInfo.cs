@@ -1,7 +1,7 @@
 ﻿using KraftWrapper.Attributes;
 using System.Reflection;
 
-namespace KraftWrapper.Extensions.Helpers
+namespace KraftWrapper.Helpers
 {
     class SitecoreFieldAttributeInfo
     {
