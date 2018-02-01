@@ -68,6 +68,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\KraftWrapper.Fake2\KraftWrapper.Fake2.csproj">
+      <Project>{FAC04E64-911F-4DAC-BED8-F65FD803D1E9}</Project>
+      <Name>KraftWrapper.Fake2</Name>
+    </ProjectReference>
     <ProjectReference Include="..\KraftWrapper.Fake\KraftWrapper.Fake.csproj">
       <Project>{5987435B-59C8-4A93-B962-64DF85288E0B}</Project>
       <Name>KraftWrapper.Fake</Name>

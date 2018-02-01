@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KraftWrapper.Fake", "KraftW
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KraftWrapper.TestHelper", "KraftWrapper.TestHelper\KraftWrapper.TestHelper.csproj", "{37B4BD44-A1F4-4B43-B073-017E184EF53F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KraftWrapper.Fake2", "KraftWrapper.Fake2\KraftWrapper.Fake2.csproj", "{FAC04E64-911F-4DAC-BED8-F65FD803D1E9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,10 @@ Global
 		{37B4BD44-A1F4-4B43-B073-017E184EF53F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37B4BD44-A1F4-4B43-B073-017E184EF53F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37B4BD44-A1F4-4B43-B073-017E184EF53F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAC04E64-911F-4DAC-BED8-F65FD803D1E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAC04E64-911F-4DAC-BED8-F65FD803D1E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAC04E64-911F-4DAC-BED8-F65FD803D1E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAC04E64-911F-4DAC-BED8-F65FD803D1E9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -49,6 +55,7 @@ Global
 		{7779DEBA-5838-402D-AEB3-0BAD679E245A} = {D209D4B6-D7F7-4C67-8F15-297EFC2D1546}
 		{5987435B-59C8-4A93-B962-64DF85288E0B} = {D209D4B6-D7F7-4C67-8F15-297EFC2D1546}
 		{37B4BD44-A1F4-4B43-B073-017E184EF53F} = {D209D4B6-D7F7-4C67-8F15-297EFC2D1546}
+		{FAC04E64-911F-4DAC-BED8-F65FD803D1E9} = {D209D4B6-D7F7-4C67-8F15-297EFC2D1546}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {79E89B02-642C-4B9C-8CE8-D089B9C5C50A}

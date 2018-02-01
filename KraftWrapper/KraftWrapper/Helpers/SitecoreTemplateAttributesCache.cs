@@ -9,18 +9,44 @@ namespace KraftWrapper.Helpers
 {
     static class SitecoreTemplateAttributesCache
     {
+        private static readonly IList<Type> _allDerivedTypes;
+
         private static readonly IDictionary<Type, SitecoreTemplateAttributeInfo> _modelAttributesCache
             = new Dictionary<Type, SitecoreTemplateAttributeInfo>();
 
+        static SitecoreTemplateAttributesCache()
+        {
+            _allDerivedTypes = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(x => x.GetTypes())
+                .Where(x => x.IsClass && !x.IsAbstract && x.BaseType != null)
+                .ToList();
+        }
+
         public static SitecoreTemplateAttributeInfo TryToGetInfoForAType(Type type)
+        {
+            return TryToGetInfoForAType(type, null);
+        }
+
+        private static SitecoreTemplateAttributeInfo TryToGetInfoForAType(Type type, IList<Type> derivedAssemblyTypes)
         {
             if (!_modelAttributesCache.ContainsKey(type))
             {
+                if (derivedAssemblyTypes == null)
+                {
+                    derivedAssemblyTypes = type.Assembly.GetTypes()
+                        .Where(x => x.IsClass && !x.IsAbstract && x.BaseType != null)
+                        .ToList();
+                }
+
                 var sitecoreTemplateAttributeInfo = new SitecoreTemplateAttributeInfo
                 {
                     Type = type,
                     SitecoreTemplateAttribute = GetSitecoreTemplateAttribute(type),
-                    SitecoreFieldAttributeInfos = GetSitecoreFieldAttributeInfos(type)
+                    SitecoreFieldAttributeInfos = GetSitecoreFieldAttributeInfos(type),
+                    DerivedModelClasses = derivedAssemblyTypes
+                                            .Where(x => x.BaseType == type)
+                                            .Select(x => TryToGetInfoForAType(x, derivedAssemblyTypes))
+                                            .ToList()
                 };
 
                 _modelAttributesCache.Add(type, sitecoreTemplateAttributeInfo);

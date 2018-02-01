@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5987435B-59C8-4A93-B962-64DF85288E0B}</ProjectGuid>
+    <ProjectGuid>{FAC04E64-911F-4DAC-BED8-F65FD803D1E9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KraftWrapper.Fake</RootNamespace>
-    <AssemblyName>KraftWrapper.Fake</AssemblyName>
+    <RootNamespace>KraftWrapper.Fake2</RootNamespace>
+    <AssemblyName>KraftWrapper.Fake2</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -33,7 +33,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -42,32 +41,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IDsStorage\IDsForModelChild.cs" />
-    <Compile Include="IDsStorage\IDsForModelChild2.cs" />
-    <Compile Include="IDsStorage\IDsForModelWithAllFieldTypes.cs" />
-    <Compile Include="IDsStorage\IDsForModelWithNamedAttributeParameters.cs" />
-    <Compile Include="IDsStorage\IDsForModelWithoutFieldAttribute.cs" />
-    <Compile Include="IDsStorage\IDsForModelWithoutTempalteAttribute.cs" />
-    <Compile Include="IDsStorage\IDsForModelWithTwoChildrenLists.cs" />
-    <Compile Include="IDsStorage\IDsForModelWithTwoFields.cs" />
-    <Compile Include="IDsStorage\IDsForModelWithChildList.cs" />
-    <Compile Include="Models\FakeModelChild.cs" />
-    <Compile Include="Models\FakeModelChild2.cs" />
-    <Compile Include="Models\FakeModelWithAllFieldTypes.cs" />
-    <Compile Include="Models\FakeModelWithNamedAttributeParameters.cs" />
-    <Compile Include="Models\FakeModelWithoutFieldAttribute.cs" />
-    <Compile Include="Models\FakeModelWithoutTempalteAttribute.cs" />
-    <Compile Include="Models\FakeModelWithTwoChildrenLists.cs" />
-    <Compile Include="Models\FakeModelWithTwoFields.cs" />
-    <Compile Include="Models\FakeModelWithOneChildList.cs" />
+    <Compile Include="IDsStorage\IDsForModelChildAnotherAssembly..cs" />
+    <Compile Include="IDsStorage\IDsForModelWithChildrenFromDiffAssemblies.cs" />
+    <Compile Include="Models\FakeModelChildAnotherAssembly.cs" />
+    <Compile Include="Models\FakeModelWithChildrenFromDiffAssemblies.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\KraftWrapper.Fake\KraftWrapper.Fake.csproj">
+      <Project>{5987435b-59c8-4a93-b962-64df85288e0b}</Project>
+      <Name>KraftWrapper.Fake</Name>
+    </ProjectReference>
     <ProjectReference Include="..\KraftWrapper\KraftWrapper.csproj">
       <Project>{904c42de-3bca-4e31-ab06-28ff85fcb68e}</Project>
       <Name>KraftWrapper</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

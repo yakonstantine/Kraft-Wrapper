@@ -1,5 +1,7 @@
 ﻿using KraftWrapper.Fake.IDsStorage;
 using KraftWrapper.Fake.Models;
+using KraftWrapper.Fake2.IDsStorage;
+using KraftWrapper.Fake2.Models;
 using KraftWrapper.Interfaces;
 using KraftWrapper.TestHelper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -458,6 +460,164 @@ namespace KraftWrapper.Extensions.Tests
             Assert.AreEqual(_booleanValue, result.BooleanValue);
         }
 
+        [TestMethod]
+        public void Mapping_ValidateModelChildrenFromDifferentAssemblies()
+        {
+            var sitecoreItemModelChild = new Mock<ISitecoreItem>();
+            sitecoreItemModelChild
+                .Setup(x => x.TemplateId)
+                .Returns(new Guid(IDsForModelChild.TemplateId));
+            sitecoreItemModelChild
+                .Setup(x => x.GetField(It.IsAny<Guid>()))
+                .Returns((Guid id) =>
+                {
+                    switch (id.ToIDString())
+                    {
+                        case IDsForModelWithTwoFields.TextValueFieldId:
+                            {
+                                return FieldMockHelper.MockSitecoreField(
+                                    _textValue,
+                                    _source);
+                            }
+                        case IDsForModelWithTwoFields.IntegerValueFieldId:
+                            {
+                                return FieldMockHelper.MockSitecoreField(
+                                    _integerValue.ToString(),
+                                    _source);
+                            }
+                        case IDsForModelChild.BooleanValueFieldId:
+                            {
+                                return FieldMockHelper.MockSitecoreField(
+                                    _booleanValue.ToString(),
+                                    _source);
+                            }
+                        default:
+                            {
+                                return null;
+                            }
+                    }
+                });
+
+            var sitecoreItemModelChild2 = new Mock<ISitecoreItem>();
+            sitecoreItemModelChild2
+                .Setup(x => x.TemplateId)
+                .Returns(new Guid(IDsForModelChild2.TemplateId));
+            sitecoreItemModelChild2
+                .Setup(x => x.GetField(It.IsAny<Guid>()))
+                .Returns((Guid id) =>
+                {
+                    switch (id.ToIDString())
+                    {
+                        case IDsForModelWithTwoFields.TextValueFieldId:
+                            {
+                                return FieldMockHelper.MockSitecoreField(
+                                    _textValue,
+                                    _source);
+                            }
+                        case IDsForModelWithTwoFields.IntegerValueFieldId:
+                            {
+                                return FieldMockHelper.MockSitecoreField(
+                                    _integerValue.ToString(),
+                                    _source);
+                            }
+                        case IDsForModelChild2.BooleanValueFieldId:
+                            {
+                                return FieldMockHelper.MockSitecoreField(
+                                    _booleanValue.ToString(),
+                                    _source);
+                            }
+                        default:
+                            {
+                                return null;
+                            }
+                    }
+                });
+
+            var sitecoreItemModelChildAnotherAssembly = new Mock<ISitecoreItem>();
+            sitecoreItemModelChildAnotherAssembly
+                .Setup(x => x.TemplateId)
+                .Returns(new Guid(IDsForModelChildAnotherAssembly.TemplateId));
+            sitecoreItemModelChildAnotherAssembly
+                .Setup(x => x.GetField(It.IsAny<Guid>()))
+                .Returns((Guid id) =>
+                {
+                    switch (id.ToIDString())
+                    {
+                        case IDsForModelWithTwoFields.TextValueFieldId:
+                            {
+                                return FieldMockHelper.MockSitecoreField(
+                                    _textValue,
+                                    _source);
+                            }
+                        case IDsForModelWithTwoFields.IntegerValueFieldId:
+                            {
+                                return FieldMockHelper.MockSitecoreField(
+                                    _integerValue.ToString(),
+                                    _source);
+                            }
+                        case IDsForModelChildAnotherAssembly.BooleanValueFieldId:
+                            {
+                                return FieldMockHelper.MockSitecoreField(
+                                    _booleanValue.ToString(),
+                                    _source);
+                            }
+                        default:
+                            {
+                                return null;
+                            }
+                    }
+                });
+
+            var children = new List<ISitecoreItem>
+                    {
+                        CreateItemWithTwoFields(),
+                        CreateItemWithAllFieldTypes(),
+                        sitecoreItemModelChild.Object,
+                        sitecoreItemModelChild2.Object,
+                        sitecoreItemModelChildAnotherAssembly.Object
+                    };
+
+            var sitecoreItem = new Mock<ISitecoreItem>();
+            sitecoreItem
+                .Setup(x => x.TemplateId)
+                .Returns(new Guid(IDsForModelWithChildrenFromDiffAssemblies.TemplateId));
+            sitecoreItem
+                .Setup(x => x.GetField(It.IsAny<Guid>()))
+                .Returns((Guid id) =>
+                {
+                    switch (id.ToIDString())
+                    {
+                        case IDsForModelWithChildrenFromDiffAssemblies.TextValueFieldId:
+                            {
+                                return FieldMockHelper.MockSitecoreField(
+                                    _textValue,
+                                    _source);
+                            }
+                        default:
+                            {
+                                return null;
+                            }
+                    }
+                });
+            sitecoreItem
+                .Setup(x => x.GetChildren())
+                .Returns(() =>
+                {
+                    return children;
+                });
+
+            var result = sitecoreItem.Object.As<FakeModelWithChildrenFromDiffAssemblies>();
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(_textValue, result.TextValue);
+
+            Assert.IsNotNull(result.Children);
+            Assert.AreEqual(children.Count - 2, result.Children.Count());
+            Assert.IsTrue(result.Children.Any(x => x.GetType() == typeof(FakeModelChild)));
+            Assert.IsTrue(result.Children.Any(x => x.GetType() == typeof(FakeModelChild2)));
+            Assert.IsTrue(result.Children.Any(x => x.GetType() == typeof(FakeModelWithTwoFields)));
+        }
+
         public Mock<ISitecoreItem> SetupItemWithAllFieldTypes()
         {
             var targetItem = new Mock<ISitecoreItem>();
@@ -676,7 +836,7 @@ namespace KraftWrapper.Extensions.Tests
             Assert.AreEqual(_internalLinkTargetItemName, result.InternalLinkField.TargetItem.Name);
         }
 
-        public void ValidateObjectWithTwoFields(FakeModelWithTwoFields result)
+        public static void ValidateObjectWithTwoFields(FakeModelWithTwoFields result)
         {
             Assert.IsNotNull(result);
             Assert.AreEqual(_textValue, result.TextValue);

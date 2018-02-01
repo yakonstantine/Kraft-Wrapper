@@ -5,13 +5,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Web;
 
 namespace KraftWrapper.Extensions
 {
     public static class SitecoreItemExtentions
-    { 
+    {
         public static T As<T>(this ISitecoreItem item)
             where T : class, ISitecoreTemplate, new()
         {
@@ -19,7 +18,7 @@ namespace KraftWrapper.Extensions
         }
 
         public static object As(this ISitecoreItem item, Type type)
-        { 
+        {
             var sitecoreTemplateAttributeInfo = SitecoreTemplateAttributesCache.TryToGetInfoForAType(type);
 
             if (!IsValidTemplate(sitecoreTemplateAttributeInfo.SitecoreTemplateAttribute, item.TemplateId, item.TemplateName))
@@ -28,7 +27,7 @@ namespace KraftWrapper.Extensions
             }
 
             return ConvertItemToModel(item, sitecoreTemplateAttributeInfo);
-        }  
+        }
 
         private static object ConvertItemToModel(ISitecoreItem item, SitecoreTemplateAttributeInfo sitecoreTemplateAttributeInfo)
         {
@@ -61,24 +60,35 @@ namespace KraftWrapper.Extensions
 
         private static IList ConvertChildren(Type childType, IList<ISitecoreItem> children)
         {
-            var childsitecoreTemplateAttributeInfo = SitecoreTemplateAttributesCache.TryToGetInfoForAType(childType);
+            var list = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(childType));
+
+            if (!children.Any())
+                return list;
 
             var childrenGroups = children.GroupBy(
                 x => new { x.TemplateId, x.TemplateName },
                 x => x,
                 (key, items) => new { Template = key, Items = items.ToList() });
 
-            var childrenGroup = childrenGroups.FirstOrDefault(x => IsValidTemplate(childsitecoreTemplateAttributeInfo.SitecoreTemplateAttribute, x.Template.TemplateId, x.Template.TemplateName));
+            var childSitecoreTemplateAttributeInfos = GetTemplateInheritanceList(
+                SitecoreTemplateAttributesCache.TryToGetInfoForAType(childType));
 
-            var list = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(childType));
-
-            if (childrenGroup == null)
-                return list;
-
-            foreach (var obj in childrenGroup.Items
-                .Select(x => ConvertItemToModel(x, childsitecoreTemplateAttributeInfo)))
+            foreach (var childSitecoreTemplateAttributeInfo in childSitecoreTemplateAttributeInfos)
             {
-                list.Add(obj);
+                var childrenGroup = childrenGroups.FirstOrDefault(x =>
+                    IsValidTemplate(
+                        childSitecoreTemplateAttributeInfo.SitecoreTemplateAttribute,
+                        x.Template.TemplateId,
+                        x.Template.TemplateName));
+
+                if (childrenGroup == null)
+                    return list;
+
+                foreach (var obj in childrenGroup.Items
+                    .Select(x => ConvertItemToModel(x, childSitecoreTemplateAttributeInfo)))
+                {
+                    list.Add(obj);
+                }
             }
 
             return list;
@@ -159,6 +169,18 @@ namespace KraftWrapper.Extensions
             }
 
             return null;
+        }
+
+        private static IList<SitecoreTemplateAttributeInfo> GetTemplateInheritanceList(SitecoreTemplateAttributeInfo sitecoreTemplateAttributeInfo)
+        {
+            var result = new List<SitecoreTemplateAttributeInfo> { sitecoreTemplateAttributeInfo };
+
+            foreach (var derivedTemplate in sitecoreTemplateAttributeInfo.DerivedModelClasses)
+            {
+                result.AddRange(GetTemplateInheritanceList(derivedTemplate));
+            }
+
+            return result;
         }
 
         private static bool IsValidTemplate(SitecoreTemplateAttribute templateAttribute, Guid templateId, string templateName)
