@@ -94,7 +94,7 @@ namespace KraftWrapper.Core
                         x.Template.TemplateName));
 
                 if (childrenGroup == null)
-                    return list;
+                    continue;
 
                 foreach (var obj in childrenGroup.Items
                     .Select(x => ConvertItemToModel(x, childSitecoreTemplateAttributeInfo)))

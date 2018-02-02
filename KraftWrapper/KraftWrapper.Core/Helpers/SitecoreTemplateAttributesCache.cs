@@ -9,18 +9,8 @@ namespace KraftWrapper.Core.Helpers
 {
     static class SitecoreTemplateAttributesCache
     {
-        private static readonly IList<Type> _allDerivedTypes;
-
         private static readonly IDictionary<Type, SitecoreTemplateAttributeInfo> _modelAttributesCache
             = new Dictionary<Type, SitecoreTemplateAttributeInfo>();
-
-        static SitecoreTemplateAttributesCache()
-        {
-            _allDerivedTypes = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(x => x.GetTypes())
-                .Where(x => x.IsClass && !x.IsAbstract && x.BaseType != null)
-                .ToList();
-        }
 
         public static SitecoreTemplateAttributeInfo TryToGetInfoForAType(Type type)
         {
