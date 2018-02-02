@@ -1,5 +1,5 @@
 ﻿using KraftWrapper.Attributes;
-using KraftWrapper.Helpers;
+using KraftWrapper.Core.Helpers;
 using KraftWrapper.Interfaces;
 using System;
 using System.Collections;
@@ -7,26 +7,36 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace KraftWrapper.Extensions
+namespace KraftWrapper.Core
 {
-    public static class SitecoreItemExtentions
+    partial class SitecoreItem
     {
-        public static T As<T>(this ISitecoreItem item)
+        public T As<T>()
             where T : class, ISitecoreTemplate, new()
         {
-            return (T)item.As(typeof(T));
+            return (T)this.As(typeof(T));
         }
 
-        public static object As(this ISitecoreItem item, Type type)
+        public object As(Type type)
         {
             var sitecoreTemplateAttributeInfo = SitecoreTemplateAttributesCache.TryToGetInfoForAType(type);
 
-            if (!IsValidTemplate(sitecoreTemplateAttributeInfo.SitecoreTemplateAttribute, item.TemplateId, item.TemplateName))
+            if (!IsValidTemplate(sitecoreTemplateAttributeInfo.SitecoreTemplateAttribute, this.TemplateId, this.TemplateName))
             {
                 return null;
             }
 
-            return ConvertItemToModel(item, sitecoreTemplateAttributeInfo);
+            return ConvertItemToModel(this, sitecoreTemplateAttributeInfo);
+        }
+
+        private static bool IsValidTemplate(SitecoreTemplateAttribute templateAttribute, Guid templateId, string templateName)
+        {
+            if (string.IsNullOrEmpty(templateAttribute.TemplateId))
+            {
+                return templateName == templateAttribute.TemplateName;
+            }
+
+            return templateId == new Guid(templateAttribute.TemplateId);
         }
 
         private static object ConvertItemToModel(ISitecoreItem item, SitecoreTemplateAttributeInfo sitecoreTemplateAttributeInfo)
@@ -54,7 +64,7 @@ namespace KraftWrapper.Extensions
                     continue;
                 }
 
-                SetFieldValue(result, item, fieldInfo);
+                SetFieldValue(item, result, fieldInfo);
             }
 
             return result;
@@ -96,13 +106,13 @@ namespace KraftWrapper.Extensions
             return list;
         }
 
-        private static void SetFieldValue(object targetObject, ISitecoreItem item, SitecoreFieldAttributeInfo sitecoreFieldAttributeInfo)
+        private static void SetFieldValue(ISitecoreItem item, object targetObject, SitecoreFieldAttributeInfo sitecoreFieldAttributeInfo)
         {
-            var value = GetSitecoreItemFieldValue(sitecoreFieldAttributeInfo.PropertyInfo.PropertyType, item, sitecoreFieldAttributeInfo.FieldAttribute);
+            var value = GetSitecoreItemFieldValue(item, sitecoreFieldAttributeInfo.PropertyInfo.PropertyType, sitecoreFieldAttributeInfo.FieldAttribute);
             sitecoreFieldAttributeInfo.PropertyInfo.SetValue(targetObject, value);
         }
 
-        private static object GetSitecoreItemFieldValue(Type propertyType, ISitecoreItem item, SitecoreFieldAttribute fieldAttribute)
+        private static object GetSitecoreItemFieldValue(ISitecoreItem item, Type propertyType, SitecoreFieldAttribute fieldAttribute)
         {
             ISitecoreField field = null;
 
@@ -183,71 +193,6 @@ namespace KraftWrapper.Extensions
             }
 
             return result;
-        }
-
-        private static bool IsValidTemplate(SitecoreTemplateAttribute templateAttribute, Guid templateId, string templateName)
-        {
-            if (string.IsNullOrEmpty(templateAttribute.TemplateId))
-            {
-                return templateName == templateAttribute.TemplateName;
-            }
-
-            return templateId == new Guid(templateAttribute.TemplateId);
-        }
-
-        private static bool IsSimple(this Type type)
-        {
-            if (type.IsGenericType
-                && type.GetGenericTypeDefinition() == typeof(Nullable<>))
-            {
-                return IsSimple(type.GetGenericArguments()[0]);
-            }
-
-            return type.IsPrimitive
-              || type.IsEnum
-              || type.Equals(typeof(string))
-              || type.Equals(typeof(decimal));
-        }
-
-        private static bool IsNumeric(this Type type)
-        {
-            switch (Type.GetTypeCode(type))
-            {
-                case TypeCode.Byte:
-                case TypeCode.SByte:
-                case TypeCode.UInt16:
-                case TypeCode.UInt32:
-                case TypeCode.UInt64:
-                case TypeCode.Int16:
-                case TypeCode.Int32:
-                case TypeCode.Int64:
-                case TypeCode.Decimal:
-                    return true;
-                default:
-                    return false;
-            }
-        }
-
-        private static bool IsFloatingPoint(this Type type)
-        {
-            switch (Type.GetTypeCode(type))
-            {
-                case TypeCode.Double:
-                case TypeCode.Single:
-                    return true;
-                default:
-                    return false;
-            }
-        }
-
-        private static bool IsGenericEnumerable(this Type type)
-        {
-            if (type.IsGenericType && typeof(IEnumerable).IsAssignableFrom(type))
-            {
-                return true;
-            }
-
-            return false;
         }
     }
 }

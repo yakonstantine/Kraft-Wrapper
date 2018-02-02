@@ -1,4 +1,5 @@
-﻿using KraftWrapper.Fake.IDsStorage;
+﻿using KraftWrapper.Core;
+using KraftWrapper.Fake.IDsStorage;
 using KraftWrapper.Fake.Models;
 using KraftWrapper.Fake2.IDsStorage;
 using KraftWrapper.Fake2.Models;
@@ -14,7 +15,7 @@ using System.Web;
 namespace KraftWrapper.Extensions.Tests
 {
     [TestClass]
-    public class SitecoreItemExtentionsTests
+    public class SitecoreItemMapperTests
     {
         #region All field types values
 
@@ -75,13 +76,13 @@ namespace KraftWrapper.Extensions.Tests
         [TestMethod]
         public void Mapping_ValidateTemplateWithChildList()
         {
-            var children = new List<ISitecoreItem>
+            var children = new List<SitecoreItem>
                     {
                         CreateItemWithAllFieldTypes(),
                         CreateItemWithAllFieldTypes()
                     };
 
-            var sitecoreItem = new Mock<ISitecoreItem>();
+            var sitecoreItem = new Mock<SitecoreItem>();
             sitecoreItem
                 .Setup(x => x.TemplateId)
                 .Returns(new Guid(IDsForModelWithChildList.TemplateId));
@@ -105,7 +106,7 @@ namespace KraftWrapper.Extensions.Tests
                 .Setup(x => x.GetChildren())
                 .Returns(() =>
                 {
-                    return children;
+                    return children.ToList<ISitecoreItem>();
                 });
 
             var result = sitecoreItem.Object.As<FakeModelWithOneChildList>();
@@ -125,7 +126,7 @@ namespace KraftWrapper.Extensions.Tests
         [TestMethod]
         public void Mapping_ValidateTemplateWithTwoChildrenLists()
         {
-            var children = new List<ISitecoreItem>
+            var children = new List<SitecoreItem>
                     {
                         CreateItemWithAllFieldTypes(),
                         CreateItemWithAllFieldTypes(),
@@ -134,7 +135,7 @@ namespace KraftWrapper.Extensions.Tests
                         CreateItemWithTwoFields()
                     };
 
-            var sitecoreItem = new Mock<ISitecoreItem>();
+            var sitecoreItem = new Mock<SitecoreItem>();
             sitecoreItem
                 .Setup(x => x.TemplateId)
                 .Returns(new Guid(IDsForModelWithTwoChildrenLists.TemplateId));
@@ -158,7 +159,7 @@ namespace KraftWrapper.Extensions.Tests
                 .Setup(x => x.GetChildren())
                 .Returns(() =>
                 {
-                    return children;
+                    return children.ToList<ISitecoreItem>();
                 });
 
             var result = sitecoreItem.Object.As<FakeModelWithTwoChildrenLists>();
@@ -186,13 +187,13 @@ namespace KraftWrapper.Extensions.Tests
         [TestMethod]
         public void Mapping_ValidateTemplateWithTwoChildrenLists_SubItemsOfOnlyOneType()
         {
-            var children = new List<ISitecoreItem>
+            var children = new List<SitecoreItem>
                     {
                         CreateItemWithTwoFields(),
                         CreateItemWithTwoFields()
                     };
 
-            var sitecoreItem = new Mock<ISitecoreItem>();
+            var sitecoreItem = new Mock<SitecoreItem>();
             sitecoreItem
                 .Setup(x => x.TemplateId)
                 .Returns(new Guid(IDsForModelWithTwoChildrenLists.TemplateId));
@@ -216,7 +217,7 @@ namespace KraftWrapper.Extensions.Tests
                 .Setup(x => x.GetChildren())
                 .Returns(() =>
                 {
-                    return children;
+                    return children.ToList<ISitecoreItem>();
                 });
 
             var result = sitecoreItem.Object.As<FakeModelWithTwoChildrenLists>();
@@ -253,7 +254,7 @@ namespace KraftWrapper.Extensions.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Mapping_IfModelDoesNotHaveTemplateAttribute()
         {
-            var sitecoreItem = new Mock<ISitecoreItem>();
+            var sitecoreItem = new Mock<SitecoreItem>();
             sitecoreItem
                 .Setup(x => x.TemplateId)
                 .Returns(new Guid("{00000000-0000-0000-0000-111111111111}"));
@@ -264,7 +265,7 @@ namespace KraftWrapper.Extensions.Tests
         [TestMethod]
         public void Mapping_IfModelDoesNotHaveFieldAttributeForAnyProperty()
         {
-            var sitecoreItem = new Mock<ISitecoreItem>();
+            var sitecoreItem = new Mock<SitecoreItem>();
             sitecoreItem
                 .Setup(x => x.TemplateId)
                 .Returns(new Guid(IDsForModelWithoutFieldAttribute.TemplateId));
@@ -333,12 +334,12 @@ namespace KraftWrapper.Extensions.Tests
         [TestMethod]
         public void Mapping_ValidateModelWithNamedAttributeParameters()
         {
-            #region Setup ISitecoreItem
+            #region Setup SitecoreItem
 
             var textField = FieldMockHelper.MockSitecoreField(_textValue, _source);
             var integerField = FieldMockHelper.MockSitecoreField(_integerValue.ToString(), _source);
 
-            var sitecoreItem = new Mock<ISitecoreItem>();
+            var sitecoreItem = new Mock<SitecoreItem>();
             sitecoreItem
                 .Setup(x => x.TemplateId)
                 .Returns(new Guid(IDsForModelWithNamedAttributeParameters.TemplateId));
@@ -418,9 +419,9 @@ namespace KraftWrapper.Extensions.Tests
         [TestMethod]
         public void Mapping_ValidateModelChild()
         {
-            #region Setup ISitecoreItem
+            #region Setup SitecoreItem
 
-            var sitecoreItem = new Mock<ISitecoreItem>();
+            var sitecoreItem = new Mock<SitecoreItem>();
             sitecoreItem
                 .Setup(x => x.TemplateId)
                 .Returns(new Guid(IDsForModelChild.TemplateId));
@@ -468,7 +469,7 @@ namespace KraftWrapper.Extensions.Tests
         [TestMethod]
         public void Mapping_ValidateModelChildrenFromDifferentAssemblies()
         {
-            var sitecoreItemModelChild = new Mock<ISitecoreItem>();
+            var sitecoreItemModelChild = new Mock<SitecoreItem>();
             sitecoreItemModelChild
                 .Setup(x => x.TemplateId)
                 .Returns(new Guid(IDsForModelChild.TemplateId));
@@ -503,7 +504,7 @@ namespace KraftWrapper.Extensions.Tests
                     }
                 });
 
-            var sitecoreItemModelChild2 = new Mock<ISitecoreItem>();
+            var sitecoreItemModelChild2 = new Mock<SitecoreItem>();
             sitecoreItemModelChild2
                 .Setup(x => x.TemplateId)
                 .Returns(new Guid(IDsForModelChild2.TemplateId));
@@ -538,7 +539,7 @@ namespace KraftWrapper.Extensions.Tests
                     }
                 });
 
-            var sitecoreItemModelChildAnotherAssembly = new Mock<ISitecoreItem>();
+            var sitecoreItemModelChildAnotherAssembly = new Mock<SitecoreItem>();
             sitecoreItemModelChildAnotherAssembly
                 .Setup(x => x.TemplateId)
                 .Returns(new Guid(IDsForModelChildAnotherAssembly.TemplateId));
@@ -573,7 +574,7 @@ namespace KraftWrapper.Extensions.Tests
                     }
                 });
 
-            var children = new List<ISitecoreItem>
+            var children = new List<SitecoreItem>
                     {
                         CreateItemWithTwoFields(),
                         CreateItemWithAllFieldTypes(),
@@ -582,7 +583,7 @@ namespace KraftWrapper.Extensions.Tests
                         sitecoreItemModelChildAnotherAssembly.Object
                     };
 
-            var sitecoreItem = new Mock<ISitecoreItem>();
+            var sitecoreItem = new Mock<SitecoreItem>();
             sitecoreItem
                 .Setup(x => x.TemplateId)
                 .Returns(new Guid(IDsForModelWithChildrenFromDiffAssemblies.TemplateId));
@@ -608,7 +609,7 @@ namespace KraftWrapper.Extensions.Tests
                 .Setup(x => x.GetChildren())
                 .Returns(() =>
                 {
-                    return children;
+                    return children.ToList<ISitecoreItem>();
                 });
 
             var result = sitecoreItem.Object.As<FakeModelWithChildrenFromDiffAssemblies>();
@@ -623,16 +624,16 @@ namespace KraftWrapper.Extensions.Tests
             Assert.IsTrue(result.Children.Any(x => x.GetType() == typeof(FakeModelWithTwoFields)));
         }
 
-        public Mock<ISitecoreItem> SetupItemWithAllFieldTypes()
+        private Mock<SitecoreItem> SetupItemWithAllFieldTypes()
         {
-            var targetItem = new Mock<ISitecoreItem>();
+            var targetItem = new Mock<SitecoreItem>();
             targetItem
                 .Setup(x => x.Name)
                 .Returns(_internalLinkTargetItemName);
 
             var internalLinkTargetItem = targetItem.Object;
 
-            var sitecoreItem = new Mock<ISitecoreItem>();
+            var sitecoreItem = new Mock<SitecoreItem>();
             sitecoreItem
                 .Setup(x => x.Id)
                 .Returns(_id);
@@ -757,14 +758,14 @@ namespace KraftWrapper.Extensions.Tests
             return sitecoreItem;
         }
 
-        public ISitecoreItem CreateItemWithAllFieldTypes()
+        private SitecoreItem CreateItemWithAllFieldTypes()
         {
             return SetupItemWithAllFieldTypes().Object;
         }
 
-        public Mock<ISitecoreItem> SetupItemWithTwoFields()
+        private Mock<SitecoreItem> SetupItemWithTwoFields()
         {
-            var sitecoreItem = new Mock<ISitecoreItem>();
+            var sitecoreItem = new Mock<SitecoreItem>();
             sitecoreItem
                 .Setup(x => x.TemplateId)
                 .Returns(new Guid(IDsForModelWithTwoFields.TemplateId));
@@ -796,12 +797,12 @@ namespace KraftWrapper.Extensions.Tests
             return sitecoreItem;
         }
 
-        public ISitecoreItem CreateItemWithTwoFields()
+        private SitecoreItem CreateItemWithTwoFields()
         {
             return SetupItemWithTwoFields().Object;
         }
 
-        public void ValidateObjectWithAllFieldTypes(FakeModelWithAllFieldTypes result)
+        private void ValidateObjectWithAllFieldTypes(FakeModelWithAllFieldTypes result)
         {
             Assert.IsNotNull(result);
 
@@ -847,7 +848,7 @@ namespace KraftWrapper.Extensions.Tests
             Assert.AreEqual(_internalLinkTargetItemName, result.InternalLinkField.TargetItem.Name);
         }
 
-        public static void ValidateObjectWithTwoFields(FakeModelWithTwoFields result)
+        private static void ValidateObjectWithTwoFields(FakeModelWithTwoFields result)
         {
             Assert.IsNotNull(result);
             Assert.AreEqual(_textValue, result.TextValue);

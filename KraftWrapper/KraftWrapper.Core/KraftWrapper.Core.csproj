@@ -48,6 +48,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\SitecoreFieldAttributeInfo.cs" />
+    <Compile Include="Helpers\SitecoreTemplateAttributeInfo.cs" />
+    <Compile Include="Helpers\SitecoreTemplateAttributesCache.cs" />
+    <Compile Include="Helpers\TypeExtensions.cs" />
+    <Compile Include="SitecoreItemMapper.cs" />
     <Compile Include="Fields\SitecoreBaseCustomField.cs" />
     <Compile Include="Fields\SitecoreCheckboxField.cs" />
     <Compile Include="Fields\SitecoreImageField.cs" />
@@ -71,5 +76,6 @@
       <Name>KraftWrapper</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

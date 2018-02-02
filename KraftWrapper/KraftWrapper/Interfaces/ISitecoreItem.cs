@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace KraftWrapper.Interfaces
 {
-    public interface ISitecoreItem
+    public interface ISitecoreItem : IAutoMappable
     {
         Guid Id { get; }
         Guid TemplateId { get; }

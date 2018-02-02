@@ -48,13 +48,13 @@
     <Compile Include="Helpers\SitecoreFieldAttributeInfo.cs" />
     <Compile Include="Helpers\SitecoreTemplateAttributesCache.cs" />
     <Compile Include="Extensions\SitecoreIDExpensions.cs" />
-    <Compile Include="Extensions\SitecoreItemExtentions.cs" />
     <Compile Include="Interfaces\Fields\ISitecoreBaseCustomField.cs" />
     <Compile Include="Interfaces\Fields\ISitecoreCheckboxField.cs" />
     <Compile Include="Interfaces\Fields\ISitecoreImageField.cs" />
     <Compile Include="Interfaces\Fields\ISitecoreInternalLinkField.cs" />
     <Compile Include="Interfaces\Fields\ISitecoreLinkField.cs" />
     <Compile Include="Interfaces\Fields\ISitecoreTextField.cs" />
+    <Compile Include="Interfaces\IAutoMappable.cs" />
     <Compile Include="Interfaces\ISitecoreContext.cs" />
     <Compile Include="Interfaces\ISitecoreDatabase.cs" />
     <Compile Include="Interfaces\ISitecoreField.cs" />

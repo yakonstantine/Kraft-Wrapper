@@ -8,16 +8,21 @@ using System.Linq;
 
 namespace KraftWrapper.Core
 {
-    class SitecoreItem : ISitecoreItem
+    partial class SitecoreItem : ISitecoreItem
     {
         private Item _item;
+
+        public SitecoreItem()
+        {
+
+        }
 
         public SitecoreItem(Item item)
         {
             _item = item ?? throw new ArgumentNullException("Input item is null.");
         }
 
-        public Guid Id
+        public virtual Guid Id
         {
             get
             {
@@ -25,7 +30,7 @@ namespace KraftWrapper.Core
             }
         }
 
-        public Guid TemplateId
+        public virtual Guid TemplateId
         {
             get
             {
@@ -33,7 +38,7 @@ namespace KraftWrapper.Core
             }
         }
 
-        public string TemplateName
+        public virtual string TemplateName
         {
             get
             {
@@ -41,7 +46,7 @@ namespace KraftWrapper.Core
             }
         }
 
-        public string Name
+        public virtual string Name
         {
             get
             {
@@ -49,7 +54,7 @@ namespace KraftWrapper.Core
             }
         }
 
-        public string DisplayName
+        public virtual string DisplayName
         {
             get
             {
@@ -57,7 +62,7 @@ namespace KraftWrapper.Core
             }
         }
 
-        public ISitecoreItemUri ItemUri
+        public virtual ISitecoreItemUri ItemUri
         {
             get
             {
@@ -65,7 +70,7 @@ namespace KraftWrapper.Core
             }
         }
 
-        public ISitecoreLanguage Language
+        public virtual ISitecoreLanguage Language
         {
             get
             {
@@ -73,39 +78,39 @@ namespace KraftWrapper.Core
             }
         }
 
-        public ISitecoreField GetField(Guid id)
+        public virtual ISitecoreField GetField(Guid id)
         {
             var sitecoreId = new ID(id);
             return CreateSitecoreField(_item.Fields[sitecoreId]);
         }
 
-        public ISitecoreField GetField(int index)
+        public virtual ISitecoreField GetField(int index)
         {
             return CreateSitecoreField(_item.Fields[index]);
         }
 
-        public ISitecoreField GetField(string name)
+        public virtual ISitecoreField GetField(string name)
         {
             return CreateSitecoreField(_item.Fields[name]);
         }
 
-        public string GetPropertyValue(Guid id)
+        public virtual string GetPropertyValue(Guid id)
         {
             var sitecoreId = new ID(id);
             return _item[sitecoreId];
         }
 
-        public string GetPropertyValue(int index)
+        public virtual string GetPropertyValue(int index)
         {
             return _item[index];
         }
 
-        public string GetPropertyValue(string name)
+        public virtual string GetPropertyValue(string name)
         {
             return _item[name];
         }
 
-        public IList<ISitecoreItem> SelectSubItems(string query = "")
+        public virtual IList<ISitecoreItem> SelectSubItems(string query = "")
         {
             var subItems = _item.Axes
                 .SelectItems(query);
@@ -120,17 +125,7 @@ namespace KraftWrapper.Core
                 .ToList();
         }
 
-        private static ISitecoreField CreateSitecoreField(Field field)
-        {
-            if (field == null)
-            {
-                return null;
-            }
-
-            return new SitecoreField(field);
-        }
-
-        public IList<ISitecoreItem> GetChildren()
+        public virtual IList<ISitecoreItem> GetChildren()
         {
             var children = _item.GetChildren();
 
@@ -144,7 +139,7 @@ namespace KraftWrapper.Core
                 .ToList();
         }
 
-        public IList<ISitecoreItem> GetDescendants()
+        public virtual IList<ISitecoreItem> GetDescendants()
         {
             var descendants = _item.Axes
                 .GetDescendants();
@@ -159,7 +154,7 @@ namespace KraftWrapper.Core
                 .ToList();
         }
 
-        public IList<ISitecoreItem> GetVersions()
+        public virtual IList<ISitecoreItem> GetVersions()
         {
             var versions = _item.Versions.GetVersions();
 
@@ -172,5 +167,16 @@ namespace KraftWrapper.Core
                 .Select(x => (ISitecoreItem)new SitecoreItem(x))
                 .ToList();
         }
+
+        private static ISitecoreField CreateSitecoreField(Field field)
+        {
+            if (field == null)
+            {
+                return null;
+            }
+
+            return new SitecoreField(field);
+        }
+
     }
 }
