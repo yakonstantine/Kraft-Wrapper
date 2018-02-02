@@ -18,6 +18,8 @@ namespace KraftWrapper.Extensions.Tests
     {
         #region All field types values
 
+        private Guid _id = Guid.NewGuid();
+
         // Simple field
         private const string _source = "source value";
         private const string _textValue = "text value";
@@ -260,7 +262,6 @@ namespace KraftWrapper.Extensions.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void Mapping_IfModelDoesNotHaveFieldAttributeForAnyProperty()
         {
             var sitecoreItem = new Mock<ISitecoreItem>();
@@ -292,7 +293,11 @@ namespace KraftWrapper.Extensions.Tests
                     }
                 });
 
-            sitecoreItem.Object.As<FakeModelWithoutFieldAttribute>();
+            var result = sitecoreItem.Object.As<FakeModelWithoutFieldAttribute>();
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(_textValue, result.TextValue);
+            Assert.AreEqual(default(int), result.IntegerValue);
         }
 
         [TestMethod]
@@ -629,6 +634,9 @@ namespace KraftWrapper.Extensions.Tests
 
             var sitecoreItem = new Mock<ISitecoreItem>();
             sitecoreItem
+                .Setup(x => x.Id)
+                .Returns(_id);
+            sitecoreItem
                 .Setup(x => x.TemplateId)
                 .Returns(new Guid(IDsForModelWithAllFieldTypes.TemplateId));
             sitecoreItem
@@ -796,6 +804,9 @@ namespace KraftWrapper.Extensions.Tests
         public void ValidateObjectWithAllFieldTypes(FakeModelWithAllFieldTypes result)
         {
             Assert.IsNotNull(result);
+
+            Assert.AreEqual(_id, result.Id);
+
             Assert.AreEqual(_textValue, result.TextValue);
             Assert.AreEqual(_integerValue, result.IntegerValue);
             Assert.AreEqual(_booleanValue, result.BooleanValue);

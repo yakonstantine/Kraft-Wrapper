@@ -10,6 +10,8 @@ namespace KraftWrapper.Fake.Models
     [SitecoreTemplate(TemplateId = IDsForModelWithAllFieldTypes.TemplateId)]
     public class FakeModelWithAllFieldTypes : ISitecoreTemplate
     {
+        public Guid Id { get; set; }
+
         [SitecoreField(FieldId = IDsForModelWithAllFieldTypes.TextValueFieldId)]
         public string TextValue { get; set; }
 

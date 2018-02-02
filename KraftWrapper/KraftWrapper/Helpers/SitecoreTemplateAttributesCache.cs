@@ -78,7 +78,7 @@ namespace KraftWrapper.Helpers
 
                 if (sitecoreFieldAttribute == null)
                 {
-                    throw new ArgumentNullException("SitecoreFieldAttribute was not found.");
+                    continue;
                 }
 
                 result.Add(new SitecoreFieldAttributeInfo

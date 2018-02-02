@@ -33,6 +33,8 @@ namespace KraftWrapper.Extensions
         {
             var result = Activator.CreateInstance(sitecoreTemplateAttributeInfo.Type);
 
+            ((ISitecoreTemplate)result).Id = item.Id;
+
             foreach (var fieldInfo in sitecoreTemplateAttributeInfo.SitecoreFieldAttributeInfos)
             {
                 var propertyInfo = fieldInfo.PropertyInfo;
