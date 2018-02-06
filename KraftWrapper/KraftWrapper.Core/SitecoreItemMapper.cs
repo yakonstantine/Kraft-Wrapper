@@ -94,7 +94,9 @@ namespace KraftWrapper.Core
                         x.Template.TemplateName));
 
                 if (childrenGroup == null)
+                {
                     continue;
+                }
 
                 foreach (var obj in childrenGroup.Items
                     .Select(x => ConvertItemToModel(x, childSitecoreTemplateAttributeInfo)))
@@ -130,7 +132,9 @@ namespace KraftWrapper.Core
             }
 
             if (field == null)
+            {
                 return null;
+            }
 
             if (propertyType.IsSimple() || propertyType == typeof(DateTime))
             {

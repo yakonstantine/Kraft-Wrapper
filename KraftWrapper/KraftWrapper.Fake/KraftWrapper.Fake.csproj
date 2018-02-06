@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="IDsStorage\IDsForModelChild.cs" />
     <Compile Include="IDsStorage\IDsForModelChild2.cs" />
+    <Compile Include="IDsStorage\IDsForModelChild3.cs" />
     <Compile Include="IDsStorage\IDsForModelWithAllFieldTypes.cs" />
     <Compile Include="IDsStorage\IDsForModelWithNamedAttributeParameters.cs" />
     <Compile Include="IDsStorage\IDsForModelWithoutFieldAttribute.cs" />
@@ -53,6 +54,7 @@
     <Compile Include="IDsStorage\IDsForModelWithChildList.cs" />
     <Compile Include="Models\FakeModelChild.cs" />
     <Compile Include="Models\FakeModelChild2.cs" />
+    <Compile Include="Models\FakeModelChild3.cs" />
     <Compile Include="Models\FakeModelWithAllFieldTypes.cs" />
     <Compile Include="Models\FakeModelWithNamedAttributeParameters.cs" />
     <Compile Include="Models\FakeModelWithoutFieldAttribute.cs" />

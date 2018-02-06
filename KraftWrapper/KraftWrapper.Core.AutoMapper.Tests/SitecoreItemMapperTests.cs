@@ -504,11 +504,11 @@ namespace KraftWrapper.Extensions.Tests
                     }
                 });
 
-            var sitecoreItemModelChild2 = new Mock<SitecoreItem>();
-            sitecoreItemModelChild2
+            var sitecoreItemModelChild3 = new Mock<SitecoreItem>();
+            sitecoreItemModelChild3
                 .Setup(x => x.TemplateId)
-                .Returns(new Guid(IDsForModelChild2.TemplateId));
-            sitecoreItemModelChild2
+                .Returns(new Guid(IDsForModelChild3.TemplateId));
+            sitecoreItemModelChild3
                 .Setup(x => x.GetField(It.IsAny<Guid>()))
                 .Returns((Guid id) =>
                 {
@@ -526,7 +526,7 @@ namespace KraftWrapper.Extensions.Tests
                                     _integerValue.ToString(),
                                     _source);
                             }
-                        case IDsForModelChild2.BooleanValueFieldId:
+                        case IDsForModelChild3.BooleanValueFieldId:
                             {
                                 return FieldMockHelper.MockSitecoreField(
                                     _booleanValue.ToString(),
@@ -579,8 +579,8 @@ namespace KraftWrapper.Extensions.Tests
                         CreateItemWithTwoFields(),
                         CreateItemWithAllFieldTypes(),
                         sitecoreItemModelChild.Object,
-                        sitecoreItemModelChild2.Object,
-                        sitecoreItemModelChildAnotherAssembly.Object
+                        sitecoreItemModelChildAnotherAssembly.Object,
+                        sitecoreItemModelChild3.Object
                     };
 
             var sitecoreItem = new Mock<SitecoreItem>();
@@ -618,9 +618,9 @@ namespace KraftWrapper.Extensions.Tests
             Assert.AreEqual(_textValue, result.TextValue);
 
             Assert.IsNotNull(result.Children);
-            Assert.AreEqual(children.Count - 2, result.Children.Count());
+            Assert.AreEqual(3, result.Children.Count());
             Assert.IsTrue(result.Children.Any(x => x.GetType() == typeof(FakeModelChild)));
-            Assert.IsTrue(result.Children.Any(x => x.GetType() == typeof(FakeModelChild2)));
+            Assert.IsTrue(result.Children.Any(x => x.GetType() == typeof(FakeModelChild3)));
             Assert.IsTrue(result.Children.Any(x => x.GetType() == typeof(FakeModelWithTwoFields)));
         }
 
