@@ -5,7 +5,7 @@ using System;
 
 namespace KraftWrapper.Fake.Models
 {
-    public class FakeModelWithoutTempalteAttribute : ISitecoreTemplate
+    public class FakeModelWithoutTempalteAttribute : IModel
     {
         public Guid Id { get; set; }
 

@@ -7,7 +7,7 @@ namespace KraftWrapper.Interfaces
     public interface ISitecoreField
     {
         string Source { get; }
-        string Value { get; }
+        string Value { get; set; }
         DateTime DateTime { get; }
         T CastToCustomField<T>() where T : class, ISitecoreBaseCustomField;
         object CastToCustomField(Type type);

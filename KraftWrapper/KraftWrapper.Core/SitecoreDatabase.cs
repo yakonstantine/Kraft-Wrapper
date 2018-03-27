@@ -75,6 +75,20 @@ namespace KraftWrapper.Core
             return CreateSitecoreItem(item);
         }
 
+        public ISitecoreTemplate GetTemplate(Guid templateId)
+        {
+            var template = _database.GetTemplate(new ID(templateId));
+
+            return new SitecoreTemplate(template);
+        }
+
+        public ISitecoreTemplate GetTemplate(string fullName)
+        {
+            var template = _database.GetTemplate(fullName);
+
+            return new SitecoreTemplate(template);
+        }
+
         private static ISitecoreItem CreateSitecoreItem(Item item)
         {
             if (item == null)

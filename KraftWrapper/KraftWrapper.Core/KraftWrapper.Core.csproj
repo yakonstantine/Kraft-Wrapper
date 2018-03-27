@@ -52,6 +52,7 @@
     <Compile Include="Helpers\SitecoreTemplateAttributeInfo.cs" />
     <Compile Include="Helpers\SitecoreTemplateAttributesCache.cs" />
     <Compile Include="Helpers\TypeExtensions.cs" />
+    <Compile Include="SitecoreConfiguration.cs" />
     <Compile Include="SitecoreItemMapper.cs" />
     <Compile Include="Fields\SitecoreBaseCustomField.cs" />
     <Compile Include="Fields\SitecoreCheckboxField.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="SitecoreItemUri.cs" />
     <Compile Include="SitecoreLanguage.cs" />
     <Compile Include="SitecoreSiteContext.cs" />
+    <Compile Include="SitecoreTemplate.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KraftWrapper\KraftWrapper.csproj">

@@ -12,9 +12,12 @@ namespace KraftWrapper.Interfaces
         string DisplayName { get; }
         ISitecoreItemUri ItemUri { get; }
         ISitecoreLanguage Language { get; }
+        string FullPath { get; }
+
         ISitecoreField GetField(string name);
         ISitecoreField GetField(int index);
         ISitecoreField GetField(Guid id);
+
         string GetPropertyValue(string name);
         string GetPropertyValue(int index);
         string GetPropertyValue(Guid id);
@@ -23,5 +26,11 @@ namespace KraftWrapper.Interfaces
         IList<ISitecoreItem> GetChildren();
         IList<ISitecoreItem> GetDescendants();
         IList<ISitecoreItem> GetVersions();
+
+        ISitecoreItem Add(string newItemName, ISitecoreTemplate template);
+
+        void BeginEdit();
+        void EndEdit();
+        void CancelEdit();
     }
 }

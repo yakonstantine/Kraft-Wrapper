@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace KraftWrapper.Fake.Models
 {
     [SitecoreTemplate(TemplateId = IDsForModelWithTwoChildrenLists.TemplateId)]
-    public class FakeModelWithTwoChildrenLists : ISitecoreTemplate
+    public class FakeModelWithTwoChildrenLists : IModel
     {
         public Guid Id { get; set; }
 

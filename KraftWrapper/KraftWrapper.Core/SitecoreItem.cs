@@ -62,6 +62,11 @@ namespace KraftWrapper.Core
             }
         }
 
+        public virtual string FullPath
+        {
+            get { return _item.Paths.FullPath; }
+        }
+
         public virtual ISitecoreItemUri ItemUri
         {
             get
@@ -168,6 +173,28 @@ namespace KraftWrapper.Core
                 .ToList();
         }
 
+        public virtual ISitecoreItem Add(string newItemName, ISitecoreTemplate template)
+        {
+            var newItem = _item.Add(newItemName, new TemplateID(new ID(template.Id)));
+
+            return new SitecoreItem(newItem);
+        }
+
+        public void BeginEdit()
+        {
+            _item.Editing.BeginEdit();
+        }
+
+        public void EndEdit()
+        {
+            _item.Editing.EndEdit();
+        }
+
+        public void CancelEdit()
+        {
+            _item.Editing.CancelEdit();
+        }
+
         private static ISitecoreField CreateSitecoreField(Field field)
         {
             if (field == null)
@@ -177,6 +204,5 @@ namespace KraftWrapper.Core
 
             return new SitecoreField(field);
         }
-
     }
 }

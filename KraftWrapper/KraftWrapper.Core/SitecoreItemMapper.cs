@@ -12,7 +12,7 @@ namespace KraftWrapper.Core
     partial class SitecoreItem
     {
         public T As<T>()
-            where T : class, ISitecoreTemplate, new()
+            where T : class, IModel, new()
         {
             return (T)this.As(typeof(T));
         }
@@ -43,7 +43,7 @@ namespace KraftWrapper.Core
         {
             var result = Activator.CreateInstance(sitecoreTemplateAttributeInfo.Type);
 
-            ((ISitecoreTemplate)result).Id = item.Id;
+            ((IModel)result).Id = item.Id;
 
             foreach (var fieldInfo in sitecoreTemplateAttributeInfo.SitecoreFieldAttributeInfos)
             {

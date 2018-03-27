@@ -4,7 +4,7 @@ namespace KraftWrapper.Interfaces
 {
     public interface IAutoMappable
     {
-        T As<T>() where T : class, ISitecoreTemplate, new();
+        T As<T>() where T : class, IModel, new();
         object As(Type type);
     }
 }

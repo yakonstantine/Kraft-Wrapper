@@ -6,7 +6,7 @@ using System;
 namespace KraftWrapper.Fake.Models
 {
     [SitecoreTemplate(TemplateName = IDsForModelWithNamedAttributeParameters.TemplateName)]
-    public class FakeModelWithNamedAttributeParameters : ISitecoreTemplate
+    public class FakeModelWithNamedAttributeParameters : IModel
     {
         public Guid Id { get; set; }
 

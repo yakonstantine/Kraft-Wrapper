@@ -13,5 +13,7 @@ namespace KraftWrapper.Interfaces
         ISitecoreItem GetItem(string path, ISitecoreLanguage language);
         ISitecoreItem GetItem(Guid id);
         ISitecoreItem GetItem(Guid id, ISitecoreLanguage language);
+        ISitecoreTemplate GetTemplate(Guid templateId);
+        ISitecoreTemplate GetTemplate(string fullName);
     }
 }

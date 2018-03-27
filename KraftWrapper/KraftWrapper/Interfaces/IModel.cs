@@ -2,8 +2,8 @@
 
 namespace KraftWrapper.Interfaces
 {
-    public interface ISitecoreTemplate
+    public interface IModel
     {
-        Guid Id { get; }
+        Guid Id { get; set; }
     }
 }

@@ -94,7 +94,7 @@ namespace KraftWrapper.Helpers
         private static SitecoreTemplateAttribute GetSitecoreTemplateAttribute(Type type)
         {
             if ((!type.IsClass && !type.IsInterface)
-                || !typeof(ISitecoreTemplate).IsAssignableFrom(type)
+                || !typeof(IModel).IsAssignableFrom(type)
                 || type.GetConstructor(Type.EmptyTypes) == null)
             {
                 throw new ArgumentException($"Type {type.Name} is not a class or is not inherit from ISitecoreTemplate or does not have default constructor.");

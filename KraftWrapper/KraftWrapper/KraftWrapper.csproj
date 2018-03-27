@@ -55,6 +55,7 @@
     <Compile Include="Interfaces\Fields\ISitecoreLinkField.cs" />
     <Compile Include="Interfaces\Fields\ISitecoreTextField.cs" />
     <Compile Include="Interfaces\IAutoMappable.cs" />
+    <Compile Include="Interfaces\ISitecoreConfiguration.cs" />
     <Compile Include="Interfaces\ISitecoreContext.cs" />
     <Compile Include="Interfaces\ISitecoreDatabase.cs" />
     <Compile Include="Interfaces\ISitecoreField.cs" />
@@ -62,8 +63,9 @@
     <Compile Include="Interfaces\ISitecoreItemUri.cs" />
     <Compile Include="Interfaces\ISitecoreLanguage.cs" />
     <Compile Include="Interfaces\ISitecoreSiteContext.cs" />
-    <Compile Include="Interfaces\ISitecoreTemplate.cs" />
+    <Compile Include="Interfaces\IModel.cs" />
     <Compile Include="Interfaces\ISitecoreFactory.cs" />
+    <Compile Include="Interfaces\ISitecoreTemplate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

@@ -8,7 +8,7 @@ using System.Web;
 namespace KraftWrapper.Fake.Models
 {
     [SitecoreTemplate(TemplateId = IDsForModelWithAllFieldTypes.TemplateId)]
-    public class FakeModelWithAllFieldTypes : ISitecoreTemplate
+    public class FakeModelWithAllFieldTypes : IModel
     {
         public Guid Id { get; set; }
 

@@ -28,6 +28,7 @@ namespace KraftWrapper.Core
         public string Value
         {
             get { return _field.Value; }
+            set { _field.Value = value; }
         }
 
         public DateTime DateTime
