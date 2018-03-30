@@ -1,6 +1,7 @@
 ﻿using KraftWrapper.Attributes;
 using KraftWrapper.Core.Helpers;
 using KraftWrapper.Interfaces;
+using Sitecore;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -181,7 +182,7 @@ namespace KraftWrapper.Core
 
             if (propertyType == typeof(DateTime))
             {
-                return DateTime.Parse(fieldValue);
+                return DateUtil.ParseDateTime(fieldValue, new DateTime()); 
             }
 
             return null;

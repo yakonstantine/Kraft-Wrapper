@@ -27,8 +27,8 @@ namespace KraftWrapper.Extensions.Tests
         private const int _integerValue = 101;
         private const bool _booleanValue = true;
         private const double _doubleValue = 1.01;
+        private const string _dateTimeValue = "20180101T121314";
 
-        private DateTime _dateTimeValue = DateTime.Now;
         private HtmlString _htmlStringValue = new HtmlString("html string value");
 
         // ISitecoreTextField
@@ -673,7 +673,7 @@ namespace KraftWrapper.Extensions.Tests
                         case IDsForModelWithAllFieldTypes.DateTimeValueFieldId:
                             {
                                 return FieldMockHelper.MockSitecoreField(
-                                    _dateTimeValue.ToString(),
+                                    _dateTimeValue,
                                     _source);
                             }
                         case IDsForModelWithAllFieldTypes.HtmlStringValueFieldId:
@@ -812,7 +812,7 @@ namespace KraftWrapper.Extensions.Tests
             Assert.AreEqual(_integerValue, result.IntegerValue);
             Assert.AreEqual(_booleanValue, result.BooleanValue);
             Assert.AreEqual(_doubleValue, result.DoubleValue);
-            Assert.AreEqual(_dateTimeValue.ToString(), result.DateTimeValue.ToString());
+            Assert.AreEqual(_dateTimeValue, result.DateTimeValue.ToString("yyyyMMddTHHmmss"));
             ValidateHtmlString(_htmlStringValue, result.HtmlStringValue);
 
             Assert.IsNotNull(result.TextField);
