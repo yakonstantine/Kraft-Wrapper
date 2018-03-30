@@ -1,4 +1,5 @@
-﻿using KraftWrapper.Interfaces;
+﻿using KraftWrapper.Core.Helpers;
+using KraftWrapper.Interfaces;
 using Sitecore.Data;
 using Sitecore.Data.Items;
 using System;
@@ -53,7 +54,7 @@ namespace KraftWrapper.Core
 
         public ISitecoreItem GetItem(string path, ISitecoreLanguage language)
         {
-            var lang = TryToCastToDefaultImplementation(language);
+            var lang = DefaultImplementationFactory.GetDefaultImplementation(language);
             var item = _database.GetItem(path, lang.RawValue);
 
             return CreateSitecoreItem(item);
@@ -67,7 +68,7 @@ namespace KraftWrapper.Core
 
         public ISitecoreItem GetItem(Guid id, ISitecoreLanguage language)
         {
-            var lang = TryToCastToDefaultImplementation(language);
+            var lang = DefaultImplementationFactory.GetDefaultImplementation(language);
 
             var sitecoreId = new ID(id);
             var item = _database.GetItem(sitecoreId, lang.RawValue);
@@ -89,6 +90,14 @@ namespace KraftWrapper.Core
             return new SitecoreTemplate(template);
         }
 
+        public Database RawValue
+        {
+            get
+            {
+                return _database;
+            }
+        }
+
         private static ISitecoreItem CreateSitecoreItem(Item item)
         {
             if (item == null)
@@ -97,18 +106,6 @@ namespace KraftWrapper.Core
             }
 
             return new SitecoreItem(item);
-        }
-
-        private static SitecoreLanguage TryToCastToDefaultImplementation(ISitecoreLanguage language)
-        {
-            var defaultImplementation = language as SitecoreLanguage;
-
-            if (defaultImplementation == null)
-            {
-                throw new ArgumentException("The language input parameter is not a defaul implamantation of ISitecoreLanguage.");
-            }
-
-            return defaultImplementation;
         }
     }
 }

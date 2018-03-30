@@ -195,6 +195,14 @@ namespace KraftWrapper.Core
             _item.Editing.CancelEdit();
         }
 
+        public Item RawValue
+        {
+            get
+            {
+                return _item;
+            }
+        }
+
         private static ISitecoreField CreateSitecoreField(Field field)
         {
             if (field == null)

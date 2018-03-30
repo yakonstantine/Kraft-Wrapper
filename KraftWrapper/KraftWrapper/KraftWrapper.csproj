@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Sitecore.Kernel">
+      <HintPath>..\..\..\..\..\inetpub\wwwroot\sitecore\Website\bin\Sitecore.Kernel.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
@@ -62,10 +65,12 @@
     <Compile Include="Interfaces\ISitecoreItem.cs" />
     <Compile Include="Interfaces\ISitecoreItemUri.cs" />
     <Compile Include="Interfaces\ISitecoreLanguage.cs" />
+    <Compile Include="Interfaces\ISitecorePublisher.cs" />
     <Compile Include="Interfaces\ISitecoreSiteContext.cs" />
     <Compile Include="Interfaces\IModel.cs" />
     <Compile Include="Interfaces\ISitecoreFactory.cs" />
     <Compile Include="Interfaces\ISitecoreTemplate.cs" />
+    <Compile Include="Options\PublishOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

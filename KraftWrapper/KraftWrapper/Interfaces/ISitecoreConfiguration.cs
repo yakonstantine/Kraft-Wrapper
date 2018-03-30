@@ -4,5 +4,7 @@
     {
         void DisableSecurity();
         void EnableSecurity();
+        void SwitchLanguage(ISitecoreLanguage language);
+        void ResetLanguage();
     }
 }
