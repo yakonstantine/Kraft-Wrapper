@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseSavableSitecoreItem.cs" />
     <Compile Include="Helpers\DefaultImplementationFactory.cs" />
     <Compile Include="Helpers\SitecoreFieldAttributeInfo.cs" />
     <Compile Include="Helpers\SitecoreTemplateAttributeInfo.cs" />

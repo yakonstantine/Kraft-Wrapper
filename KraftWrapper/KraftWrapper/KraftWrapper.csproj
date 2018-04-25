@@ -58,6 +58,7 @@
     <Compile Include="Interfaces\Fields\ISitecoreLinkField.cs" />
     <Compile Include="Interfaces\Fields\ISitecoreTextField.cs" />
     <Compile Include="Interfaces\IAutoMappable.cs" />
+    <Compile Include="Interfaces\ISavableSitecoreItem.cs" />
     <Compile Include="Interfaces\ISitecoreConfiguration.cs" />
     <Compile Include="Interfaces\ISitecoreContext.cs" />
     <Compile Include="Interfaces\ISitecoreDatabase.cs" />
