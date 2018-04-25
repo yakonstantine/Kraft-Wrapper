@@ -2,27 +2,45 @@
 using Sitecore.Data.Fields;
 using Sitecore.Data.Items;
 using Sitecore.Resources.Media;
+using System;
 
 namespace KraftWrapper.Core.Fields
 {
     class SitecoreImageField : SitecoreBaseCustomField<ImageField>, ISitecoreImageField
     {
+        private readonly MediaItem _mediaItem;
+
         public SitecoreImageField(ImageField field) : base(field)
         {
+            if (_field != null && _field.MediaItem != null)
+            {
+                _mediaItem = new MediaItem(_field.MediaItem);
+            }
+        }
+
+        public Guid Id
+        {
+            get
+            {
+                if (_mediaItem == null)
+                {
+                    return default(Guid);
+                }
+
+                return _mediaItem.ID.Guid;
+            }
         }
 
         public string Url
         {
             get
             {
-                if (_field == null || _field.MediaItem == null)
+                if (_mediaItem == null)
                 {
                     return string.Empty;
                 }
 
-                var mediaItem = new MediaItem(_field.MediaItem);
-
-                return MediaManager.GetMediaUrl(mediaItem);
+                return MediaManager.GetMediaUrl(_mediaItem);
             }
         }
 
@@ -30,18 +48,13 @@ namespace KraftWrapper.Core.Fields
         {
             get
             {
-                var imageUrl = string.Empty;
-
-                if (_field == null || _field.MediaItem == null)
+                if (_mediaItem == null)
                 {
-                    return imageUrl;
+                    return string.Empty;
                 }
 
-                var image = new MediaItem(_field.MediaItem);
-
-                imageUrl = Sitecore.StringUtil
-                    .EnsurePrefix('/', HashingUtils.ProtectAssetUrl(MediaManager.GetMediaUrl(image)));
-                return imageUrl;
+                return Sitecore.StringUtil
+                     .EnsurePrefix('/', HashingUtils.ProtectAssetUrl(MediaManager.GetMediaUrl(_mediaItem)));
             }
         }
 
@@ -49,7 +62,7 @@ namespace KraftWrapper.Core.Fields
         {
             get
             {
-                if (_field == null || _field.MediaItem == null)
+                if (_mediaItem == null)
                 {
                     return "0";
                 }
@@ -62,7 +75,7 @@ namespace KraftWrapper.Core.Fields
         {
             get
             {
-                if (_field == null || _field.MediaItem == null)
+                if (_mediaItem == null)
                 {
                     return "";
                 }
