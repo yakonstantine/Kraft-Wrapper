@@ -8,6 +8,7 @@ namespace KraftWrapper.Interfaces
         ISitecoreItem HomepageItem { get; }
         ISitecoreSiteContext Site { get; }
         ISitecoreDatabase Database { get; }
+        ISitecoreLanguage ContentLanguage { get; }
         ISitecoreItem DatasourceItem { get; }
         IDictionary<string, string> RenderingParameters { get; }
         string Placeholder { get; }

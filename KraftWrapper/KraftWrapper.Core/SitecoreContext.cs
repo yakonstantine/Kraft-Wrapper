@@ -84,6 +84,19 @@ namespace KraftWrapper.Core
             }
         }
 
+        public ISitecoreLanguage ContentLanguage
+        {
+            get
+            {
+                if (_siteContext == null)
+                {
+                    return null;
+                }
+
+                return new SitecoreLanguage(_siteContext.ContentLanguage);
+            }
+        }
+
         public IDictionary<string, string> RenderingParameters
         {
             get
